@@ -7,8 +7,6 @@ import java.util.Date;
  */
 
 public class Movie {
-
-
     private Integer mMovieID;
     private String mTitle;
     private String mPosterUrl;
