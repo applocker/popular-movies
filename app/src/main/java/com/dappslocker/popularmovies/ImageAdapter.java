@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.dappslocker.popularmovies.model.Movie;
+import com.dappslocker.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,8 +47,8 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
         }else  {
             imageView = (ImageView) convertView;
         }
-        //load the image with picasso here using test url
-        String imgUrl = "http://image.tmdb.org/t/p/w185//nBNZadXqJSdt05SHLqgT0HuC5Gm.jpg";
+        //load the image with picasso here using the poster url
+        String imgUrl = NetworkUtils.getPopularMoviesImagesUrlBase() + movieList.get(position).getPosterUrl();
         Picasso.with(mContext)
                 .load(imgUrl)
                 .placeholder(R.drawable.ic_image_black_48dp)

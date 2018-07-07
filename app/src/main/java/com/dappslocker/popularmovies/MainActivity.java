@@ -1,5 +1,7 @@
 package com.dappslocker.popularmovies;
 
+import android.net.Network;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,8 +9,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.dappslocker.popularmovies.data.MoviePreferences;
 import com.dappslocker.popularmovies.model.Movie;
+import com.dappslocker.popularmovies.utilities.NetworkUtils;
+import com.dappslocker.popularmovies.utilities.PopularMoviesJsonUtils;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,15 +33,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //TODO create a custom adapter
-        //TODO load adapter with test data
-        //TODO Add a json parser for test data
-        //TODO Add Asyn Task to get list of movies
+        //COMPLETED create a custom adapter
+        //COMPLETED load adapter with test data
+        //COMPLETED Add a json parser for test data
+        //COMPLETED Add Asyn Task to get list of movies
         //TODO Add a progress bar to show loading process
         mImageAdapter = new ImageAdapter(this,new ArrayList<Movie>());
         mGridview = (GridView) findViewById(R.id.gridview);
         mGridview.setAdapter(mImageAdapter);
-        loadTestData();
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -43,6 +48,13 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
             }
         });
+        //loadTestData();
+        loadPopularMovies();
+    }
+
+    private void loadPopularMovies() {
+        String popularMpvies = MoviePreferences.getDefaultPrefChoice();
+        new FetchMoviesTask().execute(popularMpvies);
     }
 
     private void loadTestData() {
@@ -54,5 +66,36 @@ public class MainActivity extends AppCompatActivity {
         mImageAdapter.setMovieList(listOfMovies);
     }
 
+    private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
+        @Override
+        protected ArrayList<Movie> doInBackground(String... params) {
+            if (params.length == 0){
+                return null;
+            }
+           //get the first parameter
+            String moviePref = params[0];
+            //build url using the pref
+            URL url = NetworkUtils.buildUrl(moviePref);
+            ArrayList<Movie> movieList = null;
+            try{
+                //get json response
+                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(url);
+                movieList = PopularMoviesJsonUtils.getSimpleWeatherStringsFromJson(jsonMovieResponse);
+                return movieList;
+            }catch(Exception ex){
+                ex.printStackTrace();
+                return null;
+            }
+        }
 
+        @Override
+        protected void onPostExecute(ArrayList<Movie> moviesList) {
+            //TODO Show loading Indicator
+            if (moviesList != null) {
+                mImageAdapter.setMovieList(moviesList);
+            } else {
+                //TODO DisplayErrorImages();
+            }
+        }
+    }
 }
