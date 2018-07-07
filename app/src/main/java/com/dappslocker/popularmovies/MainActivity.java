@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.dappslocker.popularmovies.data.MoviePreferences;
@@ -25,10 +26,12 @@ public class MainActivity extends AppCompatActivity {
         The sort order can be by most popular, or by top rated
         Allow the user to tap on a movie poster and transition to a details screen with additional information
         show a progress bar while loading the images
+        display an error messages if we are unable to bring back the movie data
 
  */
     private  ImageAdapter mImageAdapter;
     private  GridView mGridview;
+    private ProgressBar mLoadingIndicator;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,9 +40,10 @@ public class MainActivity extends AppCompatActivity {
         //COMPLETED load adapter with test data
         //COMPLETED Add a json parser for test data
         //COMPLETED Add Asyn Task to get list of movies
-        //TODO Add a progress bar to show loading process
+        //COMPLETED Add a progress bar to show loading process
         mImageAdapter = new ImageAdapter(this,new ArrayList<Movie>());
         mGridview = (GridView) findViewById(R.id.gridview);
+        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mGridview.setAdapter(mImageAdapter);
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -66,7 +70,17 @@ public class MainActivity extends AppCompatActivity {
         mImageAdapter.setMovieList(listOfMovies);
     }
 
+
+    private void showPopularMovieView() {
+        mGridview.setVisibility(View.VISIBLE);
+    }
     private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mLoadingIndicator.setVisibility(View.VISIBLE);
+            mGridview.setVisibility(View.INVISIBLE);
+        }
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
             if (params.length == 0){
@@ -90,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ArrayList<Movie> moviesList) {
-            //TODO Show loading Indicator
+            mLoadingIndicator.setVisibility(View.INVISIBLE);
+
             if (moviesList != null) {
+                showPopularMovieView();
                 mImageAdapter.setMovieList(moviesList);
             } else {
                 //TODO DisplayErrorImages();
