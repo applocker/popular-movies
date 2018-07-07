@@ -1,12 +1,12 @@
 package com.dappslocker.popularmovies;
 
-import android.net.Network;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -27,11 +27,13 @@ public class MainActivity extends AppCompatActivity {
         Allow the user to tap on a movie poster and transition to a details screen with additional information
         show a progress bar while loading the images
         display an error messages if we are unable to bring back the movie data
+        add menu item to re load the image data
 
  */
     private  ImageAdapter mImageAdapter;
     private  GridView mGridview;
     private ProgressBar mLoadingIndicator;
+    private LinearLayout mErrorLoadingImages;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         mImageAdapter = new ImageAdapter(this,new ArrayList<Movie>());
         mGridview = (GridView) findViewById(R.id.gridview);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
+        mErrorLoadingImages = (LinearLayout) findViewById(R.id.error_loading_indicator);
         mGridview.setAdapter(mImageAdapter);
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadPopularMovies() {
+        showPopularMovieView();
         String popularMpvies = MoviePreferences.getDefaultPrefChoice();
         new FetchMoviesTask().execute(popularMpvies);
     }
@@ -70,8 +74,12 @@ public class MainActivity extends AppCompatActivity {
         mImageAdapter.setMovieList(listOfMovies);
     }
 
-
+    private void displayErrorImages() {
+        mGridview.setVisibility(View.INVISIBLE);
+        mErrorLoadingImages.setVisibility(View.VISIBLE);
+    }
     private void showPopularMovieView() {
+        mErrorLoadingImages.setVisibility(View.INVISIBLE);
         mGridview.setVisibility(View.VISIBLE);
     }
     private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
@@ -105,13 +113,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ArrayList<Movie> moviesList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-
             if (moviesList != null) {
                 showPopularMovieView();
                 mImageAdapter.setMovieList(moviesList);
             } else {
-                //TODO DisplayErrorImages();
+                displayErrorImages();
             }
         }
     }
+
 }
