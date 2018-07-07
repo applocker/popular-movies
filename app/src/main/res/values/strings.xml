@@ -2,5 +2,6 @@
     <string name="app_name">Popular Movies</string>
     <string name="image_content_description">Image loading error</string>
     <string name="error_message">There was an error while loading the images please click refresh to try again</string>
+    <string name="menu_refresh">refresh movies</string>
 
 </resources>

@@ -3,6 +3,9 @@ package com.dappslocker.popularmovies;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -81,6 +84,25 @@ public class MainActivity extends AppCompatActivity {
     private void showPopularMovieView() {
         mErrorLoadingImages.setVisibility(View.INVISIBLE);
         mGridview.setVisibility(View.VISIBLE);
+    }
+    @Override
+    public  boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.poular_movies,menu);
+        return  true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem){
+        switch (menuItem.getItemId()){
+            case R.id.menu_item_refresh :
+                //reset the adapter data
+                mImageAdapter.setMovieList(null);
+                //reload data
+                loadPopularMovies();
+                return true;
+        }
+        return super.onOptionsItemSelected(menuItem);
     }
     private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
         @Override

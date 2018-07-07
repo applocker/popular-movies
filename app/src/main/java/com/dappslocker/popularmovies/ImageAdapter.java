@@ -28,6 +28,8 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
     }
 
     public int getCount() {
+        if (movieList == null)
+            return 0;
         return movieList.size();
     }
 
