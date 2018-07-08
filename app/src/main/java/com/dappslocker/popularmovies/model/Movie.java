@@ -1,12 +1,15 @@
 package com.dappslocker.popularmovies.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by Tiwuya on 03/07/2018.
  */
 
-public class Movie {
+public class Movie implements Parcelable{
     private Integer mMovieID;
     private String mTitle;
     private String mPosterUrl;
@@ -22,6 +25,7 @@ public class Movie {
         this.mRating = mRating;
         this.mReleaseDate = mReleaseDate;
     }
+
     public int getmMovieID() {
         return mMovieID;
     }
@@ -71,4 +75,47 @@ public class Movie {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(mMovieID);
+        dest.writeString(mTitle);
+        dest.writeString(mPosterUrl);
+        dest.writeString(mOverview);
+        dest.writeDouble(mRating);
+        dest.writeString(mReleaseDate);
+    }
+
+    protected Movie(Parcel in) {
+        if (in.readByte() == 0) {
+            mMovieID = null;
+        } else {
+            mMovieID = in.readInt();
+        }
+        mTitle = in.readString();
+        mPosterUrl = in.readString();
+        mOverview = in.readString();
+        if (in.readByte() == 0) {
+            mRating = null;
+        } else {
+            mRating = in.readDouble();
+        }
+        mReleaseDate = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel in) {
+            return new Movie(in);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }
