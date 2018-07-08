@@ -2,6 +2,15 @@
     <string name="app_name">Popular Movies</string>
     <string name="image_content_description">Image loading error</string>
     <string name="error_message">There was an error while loading the images please click refresh to try again</string>
-    <string name="menu_refresh">refresh movies</string>
+    <string name="menu_refresh">Rrefresh movies</string>
 
+    <!-- Preferences resource values  -->
+    <string-array name="popular_movie_choice_type_array">
+        <item>popular</item>
+        <item>top rated</item>
+    </string-array>
+    <string name="pref_title">Sort by</string>
+    <string name="popular_movie_choice_list_pref_key">list_pref_key</string>
+    <string name="popular_movie_default_choice">popular</string>
+    <string name="action_settings">Settings</string>
 </resources>

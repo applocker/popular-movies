@@ -1,8 +1,10 @@
 package com.dappslocker.popularmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
         show a progress bar while loading the images
         display an error messages if we are unable to bring back the movie data
         add menu item to re load the image data
+        Add settings activity to enable sorting by popular or top rated
 
  */
     private  ImageAdapter mImageAdapter;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mErrorLoadingImages = (LinearLayout) findViewById(R.id.error_loading_indicator);
         mGridview.setAdapter(mImageAdapter);
+        //initialise the default preference
+        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadPopularMovies() {
         showPopularMovieView();
-        String popularMpvies = MoviePreferences.getDefaultPrefChoice();
+        String popularMpvies = MoviePreferences.getPrefChoice();
         new FetchMoviesTask().execute(popularMpvies);
     }
 
@@ -101,9 +106,19 @@ public class MainActivity extends AppCompatActivity {
                 //reload data
                 loadPopularMovies();
                 return true;
+            case R.id.action_settings :
+                startSettingsActivity();
+                return true;
         }
         return super.onOptionsItemSelected(menuItem);
     }
+
+    private void startSettingsActivity() {
+        //Start the settings activity
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        this.startActivity(intent);
+    }
+
     private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
         @Override
         protected void onPreExecute() {

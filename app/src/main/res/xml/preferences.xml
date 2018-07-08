@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/popular_movie_default_choice"
+        android:entries="@array/popular_movie_choice_type_array"
+        android:entryValues="@array/popular_movie_choice_type_array"
+        android:key="@string/popular_movie_choice_list_pref_key"
+        android:dialogTitle="@string/pref_title"
+        android:title="@string/pref_title" />
+</android.support.v7.preference.PreferenceScreen>
