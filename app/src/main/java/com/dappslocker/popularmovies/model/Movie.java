@@ -50,12 +50,12 @@ public class Movie implements Parcelable{
         this.mPosterUrl = mPosterUrl;
     }
 
-    public String getOvervie() {
+    public String getOverview() {
         return mOverview;
     }
 
-    public void setOvervie(String mOvervie) {
-        this.mOverview = mOvervie;
+    public void setOverview(String mOverview) {
+        this.mOverview = mOverview;
     }
 
     public double getRating() {

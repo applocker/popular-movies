@@ -10,10 +10,10 @@ public class MoviePreferences {
     public static final String PREF_TOP_RATED = "toprated";
     private static final String DEFAULT_PREF_CHOICE = PREF_POPULAR;
     private static  String PrefChoice;
+
     public static String getDefaultPrefChoice() {
         return DEFAULT_PREF_CHOICE;
     }
-
 
     public static void setPrefChoice(int selectedIndex) {
         switch(selectedIndex){

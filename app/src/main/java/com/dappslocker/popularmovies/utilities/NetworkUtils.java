@@ -36,8 +36,8 @@ public final class NetworkUtils {
     private static final String POPULAR_ENDPOINT = "popular";
     private static final String TOP_RATED_ENDPOINT = "top_rated";
     private static final String KEY_PARAM = "api_key";
-
     private static final String POPULAR_MOVIES_IMAGES_URL_BASE ="http://image.tmdb.org/t/p/w185/";
+    private static final String POPULAR_MOVIES_IMAGES_URL_BASE_DETAIL ="http://image.tmdb.org/t/p/w342/";
 
     public static URL buildUrl(String pref) {
         String endPoint;
@@ -87,4 +87,9 @@ public final class NetworkUtils {
     public static String getPopularMoviesImagesUrlBase() {
         return POPULAR_MOVIES_IMAGES_URL_BASE;
     }
+
+    public static String getPopularMoviesImagesUrlBaseDetail() {
+        return POPULAR_MOVIES_IMAGES_URL_BASE_DETAIL;
+    }
+
 }

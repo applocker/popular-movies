@@ -19,7 +19,8 @@ import java.util.List;
  */
 public class ImageAdapter extends ArrayAdapter<Movie> {
     private Context mContext;
-    private List<Movie> movieList;
+
+    private static List<Movie> movieList;
 
     public ImageAdapter(Context c,List<Movie> movieList) {
         super(c,0,movieList);
@@ -63,5 +64,13 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
         this.movieList = null;
         this.movieList = movieList;
         notifyDataSetChanged();
+    }
+
+    public static Movie getMovieAtPosition(int position) {
+        if (movieList == null){
+            return null;
+        }
+        else
+            return movieList.get(position);
     }
 }

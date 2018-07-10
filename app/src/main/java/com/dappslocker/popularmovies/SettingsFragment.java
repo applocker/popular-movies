@@ -44,7 +44,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
                 findPreference(key).setSummary(mListPreference.getEntries()[selectedIndex]);
                 //set the users preference
                 MoviePreferences.setPrefChoice(selectedIndex);
-                //save the new pref
             }
         }
         else {

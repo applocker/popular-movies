@@ -4,5 +4,6 @@
         android:id="@+id/imageView_grid_item"
         android:layout_width="85dp"
         android:layout_height="85dp"
+        android:contentDescription="@string/grid_view_image_description"
         android:padding="8dp"
         android:scaleType="centerCrop" />

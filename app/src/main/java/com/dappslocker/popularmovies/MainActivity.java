@@ -1,5 +1,6 @@
 package com.dappslocker.popularmovies;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -34,16 +35,18 @@ public class MainActivity extends AppCompatActivity {
         display an error messages if we are unable to bring back the movie data
         add menu item to re load the image data
         Add settings activity to enable sorting by popular or top rated
+        Add detail activity
 
  */
     private  ImageAdapter mImageAdapter;
     private  GridView mGridview;
     private ProgressBar mLoadingIndicator;
     private LinearLayout mErrorLoadingImages;
+    private static final String POSITION_CLICKED = "position_clicked";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.popular_movie_main_activity);
         //COMPLETED create a custom adapter
         //COMPLETED load adapter with test data
         //COMPLETED Add a json parser for test data
@@ -59,8 +62,14 @@ public class MainActivity extends AppCompatActivity {
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+               /* Toast.makeText(MainActivity.this, "" + position,
+                        Toast.LENGTH_SHORT).show();*/
+
+
+                Intent movieDetailIntent = new Intent(getApplicationContext(), DetailActivity.class);
+                // COMPLETED (1) Pass the weather to the DetailActivity
+                movieDetailIntent.putExtra(POSITION_CLICKED,position);
+                startActivity(movieDetailIntent);
             }
         });
         //loadTestData();
