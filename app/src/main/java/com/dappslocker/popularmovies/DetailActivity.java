@@ -1,15 +1,15 @@
 package com.dappslocker.popularmovies;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.dappslocker.popularmovies.model.Movie;
-import com.dappslocker.popularmovies.utilities.NetworkUtils;
-import com.squareup.picasso.Picasso;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 /**
  * Created by Tiwuya on 09/07/2018.
@@ -18,25 +18,19 @@ import com.squareup.picasso.Picasso;
 public class DetailActivity extends AppCompatActivity {
 
     private static final String POSITION_CLICKED = "position_clicked";
-    private TextView mTextViewMovieId;
-    private TextView mTextViewTitle;
-    private TextView mTextViewRating;
-    private TextView mTextViewReleaseDate;
-    private TextView mTextViewOverview;
-    private ImageView mImageViewMoviePoster;
+    @BindView(R.id.textView_movie_id)  TextView mTextViewMovieId;
+    @BindView(R.id.textView_title)  TextView mTextViewTitle;
+    @BindView(R.id.textView_rating)  TextView mTextViewRating;
+    @BindView(R.id.textView_release_date)  TextView mTextViewReleaseDate;
+    @BindView(R.id.textView_overview)  TextView mTextViewOverview;
+    @BindView(R.id.imageView_movie_poster)   ImageView mImageViewMoviePoster;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popular_movie_detail_activity);
-        mTextViewMovieId = (TextView)findViewById(R.id.textView_movie_id);
-        mTextViewTitle = (TextView)findViewById(R.id.textView_title);
-        mTextViewRating = (TextView)findViewById(R.id.textView_rating);
-        mTextViewReleaseDate = (TextView)findViewById(R.id.textView_release_date);
-        mTextViewOverview = (TextView)findViewById(R.id.textView_overview);
-        mImageViewMoviePoster = (ImageView) findViewById(R.id.imageView_movie_poster);
+        ButterKnife.bind(this);
         Intent intent = getIntent();
-
         if(intent.hasExtra(POSITION_CLICKED)){
             int position = intent.getIntExtra(POSITION_CLICKED,0);
             dispalyDataForItemAtPosition(position);

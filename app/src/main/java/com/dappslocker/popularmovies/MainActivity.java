@@ -1,6 +1,5 @@
 package com.dappslocker.popularmovies;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.dappslocker.popularmovies.data.MoviePreferences;
 import com.dappslocker.popularmovies.model.Movie;
@@ -24,40 +22,23 @@ import com.dappslocker.popularmovies.utilities.PopularMoviesJsonUtils;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-/*
-    Task
-        Upon launch, present the user with an grid arrangement of movie posters.
-        Allow your user to change sort order via a setting:
-        The sort order can be by most popular, or by top rated
-        Allow the user to tap on a movie poster and transition to a details screen with additional information
-        show a progress bar while loading the images
-        display an error messages if we are unable to bring back the movie data
-        add menu item to re load the image data
-        Add settings activity to enable sorting by popular or top rated
-        Add detail activity
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
- */
-    private  ImageAdapter mImageAdapter;
-    private  GridView mGridview;
-    private ProgressBar mLoadingIndicator;
-    private LinearLayout mErrorLoadingImages;
+public class MainActivity extends AppCompatActivity {
+     private  ImageAdapter mImageAdapter;
+    @BindView(R.id.gridview)   GridView mGridview;
+    @BindView(R.id.pb_loading_indicator)  ProgressBar mLoadingIndicator;
+    @BindView(R.id.error_loading_indicator)  LinearLayout mErrorLoadingImages;
     private static final String POSITION_CLICKED = "position_clicked";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popular_movie_main_activity);
-        //COMPLETED create a custom adapter
-        //COMPLETED load adapter with test data
-        //COMPLETED Add a json parser for test data
-        //COMPLETED Add Asyn Task to get list of movies
-        //COMPLETED Add a progress bar to show loading process
+        ButterKnife.bind(this);
         mImageAdapter = new ImageAdapter(getApplicationContext(),new ArrayList<Movie>());
-        mGridview = (GridView) findViewById(R.id.gridview);
-        mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
-        mErrorLoadingImages = (LinearLayout) findViewById(R.id.error_loading_indicator);
         mGridview.setAdapter(mImageAdapter);
-        //initialise the default preference
+        //set the preference default values
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
@@ -67,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(movieDetailIntent);
             }
         });
-        //loadTestData();
         loadPopularMovies();
     }
 
