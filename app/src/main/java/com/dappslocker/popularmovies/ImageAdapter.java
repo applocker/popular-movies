@@ -1,6 +1,7 @@
 package com.dappslocker.popularmovies;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.List;
  * Created by Tiwuya on 05/07/2018.
  */
 public class ImageAdapter extends ArrayAdapter<Movie> {
+    public final static  String TAG = ImageAdapter.class.getSimpleName();
     private Context mContext;
 
     private static List<Movie> movieList;
@@ -42,8 +44,9 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
         return movieList.indexOf( movieList.get(position));
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ImageView imageView;
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        Log.i(TAG, ": start loading image at postion " + position);
+        final ImageView imageView;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_view_item, parent, false);
             imageView = (ImageView) convertView.findViewById(R.id.imageView_grid_item);
@@ -55,7 +58,18 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
         Picasso.with(mContext)
                 .load(imgUrl)
                 .placeholder(R.drawable.ic_image_black_48dp)
-                .into(imageView);
+                .into(imageView,new com.squareup.picasso.Callback() {
+                    @Override
+                    public void onSuccess() {
+                        movieList.get(position).setPosterImage(imageView.getDrawable());
+                    }
+                    @Override
+                    public void onError() {
+                        //set default image as the drawable for the movie object at this position instead
+                        movieList.get(position).setPosterImage(mContext.getResources().getDrawable(R.drawable.ic_image_black_48dp));
+                    }
+                });
+        Log.i(TAG, ": finish loading image at postion " + position);
         return imageView;
     }
 

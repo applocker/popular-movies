@@ -3,42 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView_movie_poster"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:contentDescription="@string/grid_view_image_description"
-        android:cropToPadding="false"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/ic_image_black_48dp" />
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="250dp" />
+        <ImageView
+            android:id="@+id/imageView_movie_poster"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/grid_view_image_description"
+            android:cropToPadding="false"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+             />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="125dp" />
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="250dp" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="125dp" />
 
         <TextView
             android:id="@+id/textView_movie_id_label"
@@ -47,6 +48,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:gravity="end"
             android:text="@string/movie_id"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
@@ -58,14 +60,16 @@
             android:layout_width="0dp"
             android:layout_height="19dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/blank_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toTopOf="@+id/guideline_horizontal"
             tools:layout_marginEnd="16dp"
-            tools:layout_marginStart="8dp" />
+            tools:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/textView_title_label"
@@ -74,6 +78,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:gravity="end"
             android:text="@string/movie_title"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
@@ -85,14 +90,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/blank_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/textView_movie_id"
             tools:layout_marginEnd="16dp"
-            tools:layout_marginStart="8dp" />
+            tools:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/textView_rating_label"
@@ -101,6 +108,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:gravity="end"
             android:text="@string/movie_rating"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
@@ -114,14 +122,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/blank_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/textView_title"
             tools:layout_marginEnd="16dp"
-            tools:layout_marginStart="8dp" />
+            tools:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/textView_release_date_label"
@@ -130,6 +140,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:gravity="end"
             android:text="@string/movie_release_date"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
@@ -141,14 +152,16 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/blank_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/textView_rating"
             tools:layout_marginEnd="16dp"
-            tools:layout_marginStart="8dp" />
+            tools:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
         <TextView
             android:id="@+id/textView_overview_label"
@@ -157,6 +170,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:gravity="end"
             android:text="@string/movie_overview"
             android:textAlignment="textEnd"
             app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
@@ -170,7 +184,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/blank_text"
             app:layout_constraintEnd_toEndOf="parent"
@@ -178,7 +192,9 @@
             app:layout_constraintStart_toStartOf="@+id/guideline_vertical"
             app:layout_constraintTop_toBottomOf="@+id/textView_release_date"
             tools:layout_marginEnd="16dp"
-            tools:layout_marginStart="8dp" />
+            tools:layout_marginStart="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="16dp" />
 
-</android.support.constraint.ConstraintLayout>
-    </ScrollView>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

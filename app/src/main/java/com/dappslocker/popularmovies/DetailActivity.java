@@ -1,6 +1,7 @@
 package com.dappslocker.popularmovies;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -23,8 +24,6 @@ public class DetailActivity extends AppCompatActivity {
     private TextView mTextViewReleaseDate;
     private TextView mTextViewOverview;
     private ImageView mImageViewMoviePoster;
-
-    //Use butterKnife to bind data
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +51,8 @@ public class DetailActivity extends AppCompatActivity {
             mTextViewRating.setText(Double.valueOf(movie.getRating()).toString());
             mTextViewReleaseDate.setText(movie.getReleaseDate());
             mTextViewOverview.setText(movie.getOverview());
-            //load the image with picasso here using the poster url
-            String imgUrl = NetworkUtils.getPopularMoviesImagesUrlBase() + movie.getPosterUrl();
-            Picasso.with(getApplicationContext())
-                    .load(imgUrl)
-                    .placeholder(R.drawable.ic_image_black_48dp)
-                    .into(mImageViewMoviePoster);
+            mImageViewMoviePoster.setImageDrawable(movie.getPosterImage());
+            mImageViewMoviePoster.invalidate();
         }
     }
 }

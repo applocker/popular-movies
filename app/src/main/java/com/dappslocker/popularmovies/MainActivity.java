@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         //COMPLETED Add a json parser for test data
         //COMPLETED Add Asyn Task to get list of movies
         //COMPLETED Add a progress bar to show loading process
-        mImageAdapter = new ImageAdapter(this,new ArrayList<Movie>());
+        mImageAdapter = new ImageAdapter(getApplicationContext(),new ArrayList<Movie>());
         mGridview = (GridView) findViewById(R.id.gridview);
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
         mErrorLoadingImages = (LinearLayout) findViewById(R.id.error_loading_indicator);
@@ -62,12 +62,7 @@ public class MainActivity extends AppCompatActivity {
         mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-               /* Toast.makeText(MainActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();*/
-
-
                 Intent movieDetailIntent = new Intent(getApplicationContext(), DetailActivity.class);
-                // COMPLETED (1) Pass the weather to the DetailActivity
                 movieDetailIntent.putExtra(POSITION_CLICKED,position);
                 startActivity(movieDetailIntent);
             }
