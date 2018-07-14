@@ -51,6 +51,9 @@ public final class NetworkUtils {
             default:
                 endPoint = POPULAR_ENDPOINT;
         }
+        /***
+        NOTE to get the appliction to run please replace the call to KeyUtil.getApiKey() with your API key
+         */
         Uri builtUri = Uri.parse(POPULAR_MOVIES_BASE_URL).buildUpon()
                 .appendPath(endPoint)
                 .appendQueryParameter(KEY_PARAM, KeyUtil.getApiKey())
