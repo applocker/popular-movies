@@ -1,6 +1,7 @@
 package com.dappslocker.popularmovies;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +14,17 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-/**
- * Created by Tiwuya on 05/07/2018.
- */
-public class ImageAdapter extends ArrayAdapter<Movie> {
-    public final static  String TAG = ImageAdapter.class.getSimpleName();
-    private Context mContext;
+
+class ImageAdapter extends ArrayAdapter<Movie> {
+    private final static  String TAG = ImageAdapter.class.getSimpleName();
+    private final Context mContext;
 
     private static List<Movie> movieList;
 
     public ImageAdapter(Context c,List<Movie> movieList) {
         super(c,0,movieList);
         mContext = c;
-        this.movieList = movieList;
+        ImageAdapter.movieList = movieList;
     }
 
     public int getCount() {
@@ -42,19 +41,19 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
         return movieList.indexOf( movieList.get(position));
     }
 
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        Log.i(TAG, ": start loading image at postion " + position);
+    @NonNull
+    public View getView(final int position, View convertView, @NonNull ViewGroup parent) {
+        Log.i(TAG, ": start loading image at position " + position);
         final ImageView imageView;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_view_item, parent, false);
-            imageView = (ImageView) convertView.findViewById(R.id.imageView_grid_item);
+            imageView = convertView.findViewById(R.id.imageView_grid_item);
         }else  {
             imageView = (ImageView) convertView;
         }
         //load the image with picasso here using the poster url
         String imgUrl = NetworkUtils.getPopularMoviesImagesUrlBase() + movieList.get(position).getPosterUrl();
-        Picasso.with(mContext)
-                .load(imgUrl)
+        Picasso.with(mContext).load(imgUrl)
                 .placeholder(R.drawable.ic_image_black_48dp)
                 .into(imageView,new com.squareup.picasso.Callback() {
                     @Override
@@ -65,16 +64,19 @@ public class ImageAdapter extends ArrayAdapter<Movie> {
                     public void onError() {
                         //set default image as the drawable for the movie object at this position instead
                         movieList.get(position).setPosterImage(mContext.getResources().getDrawable(R.drawable.ic_image_black_48dp));
+
                     }
+
+
                 });
-        Log.i(TAG, ": finish loading image at postion " + position);
+        Log.i(TAG, ": finish loading image at position " + position);
         return imageView;
     }
 
 
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList = null;
-        this.movieList = movieList;
+    public void setMovieList(List<Movie> listOfMovies) {
+        ImageAdapter.movieList = null;
+        ImageAdapter.movieList = listOfMovies;
         notifyDataSetChanged();
     }
 

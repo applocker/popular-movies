@@ -45,7 +45,7 @@ public final class NetworkUtils {
             case "popular":
                 endPoint = POPULAR_ENDPOINT;
                 break;
-            case "toprated":
+            case "top rated":
                 endPoint = TOP_RATED_ENDPOINT;
                 break;
             default:

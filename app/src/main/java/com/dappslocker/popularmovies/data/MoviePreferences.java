@@ -1,21 +1,31 @@
 package com.dappslocker.popularmovies.data;
 
-/**
- * Created by Tiwuya on 06/07/2018.
- */
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.support.v7.preference.PreferenceManager;
+
+import com.dappslocker.popularmovies.R;
 
 public class MoviePreferences {
 
-    public static final String PREF_POPULAR = "popular";
-    public static final String PREF_TOP_RATED = "toprated";
+    private static final String PREF_POPULAR = "popular";
+    private static final String PREF_TOP_RATED = "top rated";
     private static final String DEFAULT_PREF_CHOICE = PREF_POPULAR;
-    private static  String PrefChoice;
+    private static  String PrefChoice = "";
+    private Context context;
 
-    public static String getDefaultPrefChoice() {
-        return DEFAULT_PREF_CHOICE;
+    public MoviePreferences(Context context) {
+        this.context = context;
     }
 
-    public static void setPrefChoice(int selectedIndex) {
+    public  String getDefaultPrefChoice() {
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String choice = mSharedPreferences.getString(context.getString(R.string.popular_movie_choice_list_pref_key),DEFAULT_PREF_CHOICE);
+        return choice;
+    }
+
+    public  void setPrefChoice(int selectedIndex) {
         switch(selectedIndex){
             case 0:
                 PrefChoice = PREF_POPULAR;
@@ -29,8 +39,8 @@ public class MoviePreferences {
         }
     }
 
-    public static String getPrefChoice() {
-        if(PrefChoice != null){
+    public  String getPrefChoice() {
+        if(PrefChoice != ""){
             return PrefChoice;
         }
         else {

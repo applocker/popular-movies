@@ -10,19 +10,14 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.dappslocker.popularmovies.data.MoviePreferences;
 
-/**
- * Created by Tiwuya on 08/07/2018.
- */
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SettingsActivity sActivity;
-    private ListPreference mListPreference;
-    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.preferences);
-        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(sActivity);
+        SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(sActivity);
         //trigger the event to set the initial summary
         onSharedPreferenceChanged(mSharedPreferences, getString(R.string.popular_movie_choice_list_pref_key));
 
@@ -36,18 +31,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        MoviePreferences pref = new MoviePreferences(sActivity);
         if (key.equals(getString(R.string.popular_movie_choice_list_pref_key))) {
-            mListPreference = (ListPreference)findPreference(key);
-            int selectedIndex = -1;
-            selectedIndex = mListPreference.findIndexOfValue(sharedPreferences.getString(key, MoviePreferences.getDefaultPrefChoice()));
-            if (selectedIndex > -1) {
+            ListPreference mListPreference = (ListPreference) findPreference(key);
+            int selectedIndex;
+            selectedIndex = mListPreference.findIndexOfValue(sharedPreferences.getString(key, pref.getDefaultPrefChoice()));
+            if (selectedIndex >= 0) {
                 findPreference(key).setSummary(mListPreference.getEntries()[selectedIndex]);
                 //set the users preference
-                MoviePreferences.setPrefChoice(selectedIndex);
+                pref.setPrefChoice(selectedIndex);
             }
         }
         else {
-            findPreference(key).setSummary(sharedPreferences.getString(key,  MoviePreferences.getDefaultPrefChoice()));
+            findPreference(key).setSummary(sharedPreferences.getString(key,  pref.getDefaultPrefChoice()));
         }
     }
 

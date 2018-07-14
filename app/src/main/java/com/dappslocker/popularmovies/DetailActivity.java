@@ -11,18 +11,21 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-/**
- * Created by Tiwuya on 09/07/2018.
- */
 
 public class DetailActivity extends AppCompatActivity {
 
     private static final String POSITION_CLICKED = "position_clicked";
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_movie_id)  TextView mTextViewMovieId;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_title)  TextView mTextViewTitle;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_rating)  TextView mTextViewRating;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_release_date)  TextView mTextViewReleaseDate;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_overview)  TextView mTextViewOverview;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.imageView_movie_poster)   ImageView mImageViewMoviePoster;
 
     @Override
@@ -33,16 +36,16 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent.hasExtra(POSITION_CLICKED)){
             int position = intent.getIntExtra(POSITION_CLICKED,0);
-            dispalyDataForItemAtPosition(position);
+            displayDataForItemAtPosition(position);
         }
     }
 
-    private void dispalyDataForItemAtPosition(int position) {
+    private void displayDataForItemAtPosition(int position) {
         Movie movie = ImageAdapter.getMovieAtPosition(position);
         if(movie != null ){
-            mTextViewMovieId.setText(Integer.valueOf(movie.getmMovieID()).toString());
+            mTextViewMovieId.setText( String.format(getResources().getConfiguration().locale,"%d", movie.getMovieID()));
             mTextViewTitle.setText(movie.getTitle());
-            mTextViewRating.setText(Double.valueOf(movie.getRating()).toString());
+            mTextViewRating.setText(String.format(getResources().getConfiguration().locale,"%f", movie.getRating()));
             mTextViewReleaseDate.setText(movie.getReleaseDate());
             mTextViewOverview.setText(movie.getOverview());
             mImageViewMoviePoster.setImageDrawable(movie.getPosterImage());

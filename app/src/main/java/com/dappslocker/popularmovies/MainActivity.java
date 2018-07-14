@@ -27,8 +27,11 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
      private  ImageAdapter mImageAdapter;
-    @BindView(R.id.gridview)   GridView mGridview;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.gridview)   GridView mGridView;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.pb_loading_indicator)  ProgressBar mLoadingIndicator;
+    @SuppressWarnings("WeakerAccess")
     @BindView(R.id.error_loading_indicator)  LinearLayout mErrorLoadingImages;
     private static final String POSITION_CLICKED = "position_clicked";
     @Override
@@ -37,10 +40,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.popular_movie_main_activity);
         ButterKnife.bind(this);
         mImageAdapter = new ImageAdapter(getApplicationContext(),new ArrayList<Movie>());
-        mGridview.setAdapter(mImageAdapter);
+        mGridView.setAdapter(mImageAdapter);
         //set the preference default values
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        mGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 Intent movieDetailIntent = new Intent(getApplicationContext(), DetailActivity.class);
@@ -53,8 +56,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadPopularMovies() {
         showPopularMovieView();
-        String popularMpvies = MoviePreferences.getPrefChoice();
-        new FetchMoviesTask().execute(popularMpvies);
+        MoviePreferences moviePreferences = new MoviePreferences(this);
+        String popularMovies = moviePreferences.getPrefChoice();
+        new FetchMoviesTask().execute(popularMovies);
     }
 
     private void loadTestData() {
@@ -67,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayErrorImages() {
-        mGridview.setVisibility(View.INVISIBLE);
+        mGridView.setVisibility(View.INVISIBLE);
         mErrorLoadingImages.setVisibility(View.VISIBLE);
     }
     private void showPopularMovieView() {
         mErrorLoadingImages.setVisibility(View.INVISIBLE);
-        mGridview.setVisibility(View.VISIBLE);
+        mGridView.setVisibility(View.VISIBLE);
     }
     @Override
     public  boolean onCreateOptionsMenu(Menu menu){
@@ -108,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             mLoadingIndicator.setVisibility(View.VISIBLE);
-            mGridview.setVisibility(View.INVISIBLE);
+            mGridView.setVisibility(View.INVISIBLE);
         }
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
@@ -119,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             String moviePref = params[0];
             //build url using the pref
             URL url = NetworkUtils.buildUrl(moviePref);
-            ArrayList<Movie> movieList = null;
+            ArrayList<Movie> movieList;
             try{
                 //get json response
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(url);

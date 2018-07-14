@@ -1,15 +1,9 @@
 package com.dappslocker.popularmovies.model;
 
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.Date;
-
-/**
- * Created by Tiwuya on 03/07/2018.
- */
 
 public class Movie implements Parcelable{
     private Integer mMovieID;
@@ -39,11 +33,11 @@ public class Movie implements Parcelable{
         this.mPosterImage = null;
     }
 
-    public int getmMovieID() {
+    public int getMovieID() {
         return mMovieID;
     }
 
-    public void setmMovieID(int mMovieID) {
+    public void setMovieID(int mMovieID) {
         this.mMovieID = mMovieID;
     }
 
@@ -103,7 +97,7 @@ public class Movie implements Parcelable{
         dest.writeString(mReleaseDate);
     }
 
-    protected Movie(Parcel in) {
+    private Movie(Parcel in) {
         if (in.readByte() == 0) {
             mMovieID = null;
         } else {

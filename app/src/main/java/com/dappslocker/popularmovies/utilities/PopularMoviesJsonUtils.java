@@ -10,15 +10,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-/**
- * Created by Tiwuya on 05/07/2018.
- */
+
 
 public final class PopularMoviesJsonUtils {
     private final static String TAG = PopularMoviesJsonUtils.class.getSimpleName();
     public static ArrayList<Movie> getSimpleWeatherStringsFromJson(String moviesJsonString) throws JSONException {
 
-        Log.i(TAG," recieved movieJsonString ");
+        Log.i(TAG," received movieJsonString ");
         final String PM_RESULTS = "results";
         final String PM_ID = "id"; //int
         final String PM_TITLE = "title" ;  //String
