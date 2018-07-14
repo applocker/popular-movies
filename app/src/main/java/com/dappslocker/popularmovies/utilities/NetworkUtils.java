@@ -17,7 +17,6 @@ package com.dappslocker.popularmovies.utilities;
 
 import android.net.Uri;
 import android.util.Log;
-import com.dappslocker.popularmovies.apikey.KeyUtil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -26,7 +25,7 @@ import java.net.URL;
 import java.util.Scanner;
 
 /**
- * These utilities will be used to communicate with the weather servers.
+ * These utilities will be used to communicate with the movies servers.
  */
 public final class NetworkUtils {
 
@@ -56,7 +55,7 @@ public final class NetworkUtils {
          */
         Uri builtUri = Uri.parse(POPULAR_MOVIES_BASE_URL).buildUpon()
                 .appendPath(endPoint)
-                .appendQueryParameter(KEY_PARAM, KeyUtil.getApiKey())
+                .appendQueryParameter(KEY_PARAM, "<Enter your api key>")
                 .build();
         URL url = null;
         try {
