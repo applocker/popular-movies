@@ -5,30 +5,28 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
 import com.dappslocker.popularmovies.data.MoviePreferences;
 import com.dappslocker.popularmovies.model.Movie;
 import com.dappslocker.popularmovies.utilities.NetworkUtils;
 import com.dappslocker.popularmovies.utilities.PopularMoviesJsonUtils;
-
 import java.net.URL;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ImageAdapter.ImageAdapterOnClickHandler {
      private  ImageAdapter mImageAdapter;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.gridview)   GridView mGridView;
+    @BindView(R.id.recycler_gridview) RecyclerView mRecylerGridView;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.pb_loading_indicator)  ProgressBar mLoadingIndicator;
     @SuppressWarnings("WeakerAccess")
@@ -39,18 +37,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popular_movie_main_activity);
         ButterKnife.bind(this);
-        mImageAdapter = new ImageAdapter(getApplicationContext(),new ArrayList<Movie>());
-        mGridView.setAdapter(mImageAdapter);
+        mImageAdapter = new ImageAdapter(getApplicationContext(),new ArrayList<Movie>(),this);
+        mRecylerGridView.setAdapter(mImageAdapter);
         //set the preference default values
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Intent movieDetailIntent = new Intent(getApplicationContext(), DetailActivity.class);
-                movieDetailIntent.putExtra(POSITION_CLICKED,position);
-                startActivity(movieDetailIntent);
-            }
-        });
+        GridLayoutManager layoutManager
+                = new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false) ;
+        mRecylerGridView.setLayoutManager(layoutManager);
         loadPopularMovies();
     }
 
@@ -71,12 +64,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayErrorImages() {
-        mGridView.setVisibility(View.INVISIBLE);
+        mRecylerGridView.setVisibility(View.INVISIBLE);
         mErrorLoadingImages.setVisibility(View.VISIBLE);
     }
     private void showPopularMovieView() {
         mErrorLoadingImages.setVisibility(View.INVISIBLE);
-        mGridView.setVisibility(View.VISIBLE);
+        mRecylerGridView.setVisibility(View.VISIBLE);
     }
     @Override
     public  boolean onCreateOptionsMenu(Menu menu){
@@ -107,12 +100,19 @@ public class MainActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
+    @Override
+    public void onClick(int position) {
+        Intent movieDetailIntent = new Intent(getApplicationContext(), DetailActivity.class);
+        movieDetailIntent.putExtra(POSITION_CLICKED,position);
+        startActivity(movieDetailIntent);
+    }
+
     private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             mLoadingIndicator.setVisibility(View.VISIBLE);
-            mGridView.setVisibility(View.INVISIBLE);
+            mRecylerGridView.setVisibility(View.INVISIBLE);
         }
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {

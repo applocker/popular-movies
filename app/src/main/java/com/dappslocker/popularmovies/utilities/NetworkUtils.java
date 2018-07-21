@@ -17,6 +17,9 @@ package com.dappslocker.popularmovies.utilities;
 
 import android.net.Uri;
 import android.util.Log;
+
+import com.dappslocker.popularmovies.apikey.KeyUtil;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -55,7 +58,7 @@ public final class NetworkUtils {
          */
         Uri builtUri = Uri.parse(POPULAR_MOVIES_BASE_URL).buildUpon()
                 .appendPath(endPoint)
-                .appendQueryParameter(KEY_PARAM, "<Enter your api key>")
+                .appendQueryParameter(KEY_PARAM, KeyUtil.getApiKey())
                 .build();
         URL url = null;
         try {

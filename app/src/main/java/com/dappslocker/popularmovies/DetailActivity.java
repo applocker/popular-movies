@@ -6,11 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.dappslocker.popularmovies.model.Movie;
-
+import com.dappslocker.popularmovies.utilities.NetworkUtils;
+import com.squareup.picasso.Picasso;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -48,8 +47,16 @@ public class DetailActivity extends AppCompatActivity {
             mTextViewRating.setText(String.format(getResources().getConfiguration().locale,"%f", movie.getRating()));
             mTextViewReleaseDate.setText(movie.getReleaseDate());
             mTextViewOverview.setText(movie.getOverview());
-            mImageViewMoviePoster.setImageDrawable(movie.getPosterImage());
-            mImageViewMoviePoster.invalidate();
+            loadImage(movie);
         }
     }
+
+    private void loadImage(Movie movie) {
+        //re-load the image with picasso here using the poster url the images should now be cached in memory
+        String imgUrl = NetworkUtils.getPopularMoviesImagesUrlBase() + movie.getPosterUrl();
+        Picasso.with(getApplicationContext()).load(imgUrl)
+                .placeholder(R.drawable.ic_image_black_48dp)
+                .into(mImageViewMoviePoster);
+    }
+
 }
