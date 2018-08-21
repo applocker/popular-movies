@@ -17,6 +17,8 @@ import com.dappslocker.popularmovies.data.MoviePreferences;
 import com.dappslocker.popularmovies.model.Movie;
 import com.dappslocker.popularmovies.utilities.NetworkUtils;
 import com.dappslocker.popularmovies.utilities.PopularMoviesJsonUtils;
+import com.google.gson.JsonParseException;
+
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -129,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(url);
                 movieList = PopularMoviesJsonUtils.getSimpleWeatherStringsFromJson(jsonMovieResponse);
                 return movieList;
+            }catch(JsonParseException ex){
+                ex.printStackTrace();
+                return null;
             }catch(Exception ex){
                 ex.printStackTrace();
                 return null;

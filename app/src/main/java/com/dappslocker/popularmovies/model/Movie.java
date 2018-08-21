@@ -12,16 +12,6 @@ public class Movie implements Parcelable{
     private String mOverview;
     private Double mRating;
     private String mReleaseDate;
-    private Drawable mPosterImage;
-    public Drawable getPosterImage() {
-        return mPosterImage;
-    }
-
-    public void setPosterImage(Drawable mPosterImage) {
-        this.mPosterImage = mPosterImage;
-    }
-
-
 
     public Movie(int mMovieID, String mTitle, String mPosterUrl,String mOverview, Double mRating,String mReleaseDate ){
         this.mMovieID = mMovieID;
@@ -30,7 +20,6 @@ public class Movie implements Parcelable{
         this.mOverview = mOverview;
         this.mRating = mRating;
         this.mReleaseDate = mReleaseDate;
-        this.mPosterImage = null;
     }
 
     public int getMovieID() {

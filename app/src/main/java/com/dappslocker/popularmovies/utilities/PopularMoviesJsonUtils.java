@@ -4,18 +4,17 @@ import android.util.Log;
 
 import com.dappslocker.popularmovies.model.Movie;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 
-
-
 public final class PopularMoviesJsonUtils {
     private final static String TAG = PopularMoviesJsonUtils.class.getSimpleName();
-    public static ArrayList<Movie> getSimpleWeatherStringsFromJson(String moviesJsonString) throws JSONException {
-
+    public static ArrayList<Movie> getSimpleWeatherStringsFromJson(String moviesJsonString) throws JsonParseException {
         Log.i(TAG," received movieJsonString ");
         final String PM_RESULTS = "results";
         final String PM_ID = "id"; //int
@@ -27,26 +26,25 @@ public final class PopularMoviesJsonUtils {
         ArrayList<Movie> movieList = new ArrayList<>();
         movieList.clear();
         //parse the whole data to a single json object
-        JSONObject movieListJson = new JSONObject(moviesJsonString);
-        if(!(movieListJson.has(PM_RESULTS))){
+        JsonElement movieListJsonElement = new JsonParser().parse(moviesJsonString);
+        JsonObject  movieListJsonObject = movieListJsonElement.getAsJsonObject();
+        if(!(movieListJsonObject.has(PM_RESULTS))){
             return null;
         }
         //return the array of results
-        JSONArray resultsArray = movieListJson.getJSONArray(PM_RESULTS);
+        JsonArray resultsArray = movieListJsonObject.getAsJsonArray(PM_RESULTS);
         //iterate over the results to create a movie object
-        for(int i = 0; i <resultsArray.length();i++ ){
-            JSONObject movieObject= resultsArray.getJSONObject(i);
-            Integer mMovieID = movieObject.getInt(PM_ID);
-            String mTitle = movieObject.getString(PM_TITLE) ;
-            String mPosterUrl = movieObject.getString(PM_POSTER_PATH);
-            String mOverview =  movieObject.getString(PM_OVERVIEW);
-            Double mRating = movieObject.getDouble(PM_POPULARITY);
-            String mReleaseDate =  movieObject.getString(PM_RELEASE_DATE);
-
+        for(int i = 0; i <resultsArray.size();i++ ){
+            JsonObject movieObject = resultsArray.get(i).getAsJsonObject();
+            Integer mMovieID = movieObject.get(PM_ID).getAsInt();
+            String mTitle = movieObject.get(PM_TITLE).getAsString() ;
+            String mPosterUrl = movieObject.get(PM_POSTER_PATH).getAsString();
+            String mOverview =  movieObject.get(PM_OVERVIEW).getAsString();
+            Double mRating = movieObject.get(PM_POPULARITY).getAsDouble();
+            String mReleaseDate =  movieObject.get(PM_RELEASE_DATE).getAsString();
             Movie movie = new Movie(mMovieID, mTitle, mPosterUrl,mOverview, mRating,mReleaseDate );
             movieList.add(movie);
         }
         return movieList;
     }
-
 }
