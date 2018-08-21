@@ -1,16 +1,23 @@
 package com.dappslocker.popularmovies.model;
 
-import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 
 public class Movie implements Parcelable{
+    @SerializedName("id")
     private Integer mMovieID;
+    @SerializedName("title")
     private String mTitle;
+    @SerializedName("poster_path")
     private String mPosterUrl;
+    @SerializedName("overview")
     private String mOverview;
+    @SerializedName("popularity")
     private Double mRating;
+    @SerializedName("release_date")
     private String mReleaseDate;
 
     public Movie(int mMovieID, String mTitle, String mPosterUrl,String mOverview, Double mRating,String mReleaseDate ){

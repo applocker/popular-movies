@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.dappslocker.popularmovies.model.Movie;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
@@ -17,12 +18,6 @@ public final class PopularMoviesJsonUtils {
     public static ArrayList<Movie> getSimpleWeatherStringsFromJson(String moviesJsonString) throws JsonParseException {
         Log.i(TAG," received movieJsonString ");
         final String PM_RESULTS = "results";
-        final String PM_ID = "id"; //int
-        final String PM_TITLE = "title" ;  //String
-        final String PM_POSTER_PATH = "poster_path"; //String
-        final String PM_OVERVIEW = "overview"; //String
-        final String PM_POPULARITY = "popularity" ; //double
-        final String PM_RELEASE_DATE = "release_date"; //String
         ArrayList<Movie> movieList = new ArrayList<>();
         movieList.clear();
         //parse the whole data to a single json object
@@ -34,15 +29,10 @@ public final class PopularMoviesJsonUtils {
         //return the array of results
         JsonArray resultsArray = movieListJsonObject.getAsJsonArray(PM_RESULTS);
         //iterate over the results to create a movie object
+        Gson gson = new Gson();
         for(int i = 0; i <resultsArray.size();i++ ){
             JsonObject movieObject = resultsArray.get(i).getAsJsonObject();
-            Integer mMovieID = movieObject.get(PM_ID).getAsInt();
-            String mTitle = movieObject.get(PM_TITLE).getAsString() ;
-            String mPosterUrl = movieObject.get(PM_POSTER_PATH).getAsString();
-            String mOverview =  movieObject.get(PM_OVERVIEW).getAsString();
-            Double mRating = movieObject.get(PM_POPULARITY).getAsDouble();
-            String mReleaseDate =  movieObject.get(PM_RELEASE_DATE).getAsString();
-            Movie movie = new Movie(mMovieID, mTitle, mPosterUrl,mOverview, mRating,mReleaseDate );
+            Movie movie = gson.fromJson(movieObject,Movie.class);
             movieList.add(movie);
         }
         return movieList;
