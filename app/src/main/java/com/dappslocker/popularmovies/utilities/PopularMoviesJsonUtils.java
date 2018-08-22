@@ -13,6 +13,11 @@ import com.google.gson.JsonParser;
 
 import java.util.ArrayList;
 
+
+/**
+ * Class no longer used to parse json movie data. movie data now retrieved and parsed via Retrofit
+*/
+@Deprecated
 public final class PopularMoviesJsonUtils {
     private final static String TAG = PopularMoviesJsonUtils.class.getSimpleName();
     public static ArrayList<Movie> getSimpleWeatherStringsFromJson(String moviesJsonString) throws JsonParseException {

@@ -1,7 +1,6 @@
 package com.dappslocker.popularmovies;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -13,17 +12,23 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.dappslocker.popularmovies.apikey.KeyUtil;
 import com.dappslocker.popularmovies.data.MoviePreferences;
 import com.dappslocker.popularmovies.model.Movie;
+import com.dappslocker.popularmovies.model.MovieList;
+import com.dappslocker.popularmovies.utilities.GetMovieDataService;
 import com.dappslocker.popularmovies.utilities.NetworkUtils;
-import com.dappslocker.popularmovies.utilities.PopularMoviesJsonUtils;
-import com.google.gson.JsonParseException;
+import com.dappslocker.popularmovies.utilities.RetrofitClient;
 
-import java.net.URL;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ImageAdapter.ImageAdapterOnClickHandler {
      private  ImageAdapter mImageAdapter;
@@ -51,9 +56,43 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
 
     private void loadPopularMovies() {
         showPopularMovieView();
-        MoviePreferences moviePreferences = new MoviePreferences(this);
-        String popularMovies = moviePreferences.getPrefChoice();
-        new FetchMoviesTask().execute(popularMovies);
+        mLoadingIndicator.setVisibility(View.VISIBLE);
+        mRecylerGridView.setVisibility(View.INVISIBLE);
+        fetchMoviesUsingRetrofit();
+    }
+
+    private void fetchMoviesUsingRetrofit() {
+        GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
+        Call<MovieList> call =
+                service.getMovies(NetworkUtils.getEndpoint( MoviePreferences.getPrefChoice(this)), KeyUtil.getApiKey());
+        call.enqueue(new Callback<MovieList>() {
+            @Override
+            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
+                if(response.isSuccessful()){
+                    displayResponseData(response.body());
+                }
+                else{
+                    displayResponseData(null);
+                }
+            }
+            @Override
+            public void onFailure(Call<MovieList> call, Throwable t) {
+                mLoadingIndicator.setVisibility(View.INVISIBLE);
+                Toast.makeText(MainActivity.this,
+                        "Error loading movies...Please try later!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void displayResponseData(MovieList moviesList) {
+        if (moviesList != null) {
+            showPopularMovieView();
+            mImageAdapter.setMovieList(moviesList.getMovies());
+        } else {
+            displayErrorImages();
+        }
     }
 
     private void loadTestData() {
@@ -108,48 +147,4 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
         movieDetailIntent.putExtra(POSITION_CLICKED,position);
         startActivity(movieDetailIntent);
     }
-
-    private class FetchMoviesTask extends AsyncTask<String,Void,ArrayList<Movie>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mLoadingIndicator.setVisibility(View.VISIBLE);
-            mRecylerGridView.setVisibility(View.INVISIBLE);
-        }
-        @Override
-        protected ArrayList<Movie> doInBackground(String... params) {
-            if (params.length == 0){
-                return null;
-            }
-           //get the first parameter
-            String moviePref = params[0];
-            //build url using the pref
-            URL url = NetworkUtils.buildUrl(moviePref);
-            ArrayList<Movie> movieList;
-            try{
-                //get json response
-                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(url);
-                movieList = PopularMoviesJsonUtils.getSimpleWeatherStringsFromJson(jsonMovieResponse);
-                return movieList;
-            }catch(JsonParseException ex){
-                ex.printStackTrace();
-                return null;
-            }catch(Exception ex){
-                ex.printStackTrace();
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Movie> moviesList) {
-            mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (moviesList != null) {
-                showPopularMovieView();
-                mImageAdapter.setMovieList(moviesList);
-            } else {
-                displayErrorImages();
-            }
-        }
-    }
-
 }

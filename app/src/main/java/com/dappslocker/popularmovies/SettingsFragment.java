@@ -20,7 +20,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
         SharedPreferences mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(sActivity);
         //trigger the event to set the initial summary
         onSharedPreferenceChanged(mSharedPreferences, getString(R.string.popular_movie_choice_list_pref_key));
-
     }
 
     @Override
@@ -31,19 +30,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        MoviePreferences pref = new MoviePreferences(sActivity);
+        //MoviePreferences pref = new MoviePreferences(sActivity);
         if (key.equals(getString(R.string.popular_movie_choice_list_pref_key))) {
             ListPreference mListPreference = (ListPreference) findPreference(key);
             int selectedIndex;
-            selectedIndex = mListPreference.findIndexOfValue(sharedPreferences.getString(key, pref.getDefaultPrefChoice()));
+            selectedIndex = mListPreference.findIndexOfValue(sharedPreferences.getString(key, MoviePreferences.getDefaultPrefChoice(sActivity)));
             if (selectedIndex >= 0) {
                 findPreference(key).setSummary(mListPreference.getEntries()[selectedIndex]);
                 //set the users preference
-                pref.setPrefChoice(selectedIndex);
+                MoviePreferences.setPrefChoice(selectedIndex,sActivity);
             }
         }
         else {
-            findPreference(key).setSummary(sharedPreferences.getString(key,  pref.getDefaultPrefChoice()));
+            findPreference(key).setSummary(sharedPreferences.getString(key,  MoviePreferences.getDefaultPrefChoice(sActivity)));
         }
     }
 
