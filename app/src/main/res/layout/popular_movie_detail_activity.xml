@@ -11,35 +11,43 @@
 
         <ImageView
             android:id="@+id/imageView_movie_poster"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/grid_view_image_description"
             android:cropToPadding="false"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_vertical_equal_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-             />
+            android:layout_marginLeft="16dp" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline_horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="250dp" />
+            app:layout_constraintGuide_percent="0.15" />
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="125dp" />
+            app:layout_constraintGuide_percent="0.4" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_vertical_equal_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <TextView
             android:id="@+id/textView_movie_id_label"
@@ -195,6 +203,24 @@
             tools:layout_marginStart="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginLeft="16dp" />
+
+        <ToggleButton
+            android:id="@+id/toggleButton_favourite"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:textOff="@string/toggle_favourite"
+            android:textOn="@string/toggle_favourite"
+            android:onClick="favouriteMovieClicked"
+            app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.363"
+            app:layout_constraintStart_toStartOf="@+id/guideline_vertical_equal_divider"
+            tools:text="@string/toggle_favourite" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

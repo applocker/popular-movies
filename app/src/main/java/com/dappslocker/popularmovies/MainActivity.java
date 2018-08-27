@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
             @Override
             public void onFailure(Call<MovieList> call, Throwable t) {
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
+                displayResponseData(null);
                 Toast.makeText(MainActivity.this,
                         "Error loading movies...Please try later!",
                         Toast.LENGTH_SHORT).show();

@@ -1,25 +1,43 @@
 package com.dappslocker.popularmovies.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-
+@Entity(tableName = "favouriteMovies")
 public class Movie implements Parcelable{
+
+    @PrimaryKey
+    @ColumnInfo(name = "movieId")
     @SerializedName("id")
-    private Integer mMovieID;
+    private int mMovieID;
+
+    @ColumnInfo(name = "title")
     @SerializedName("title")
     private String mTitle;
+
+    @Ignore
     @SerializedName("poster_path")
     private String mPosterUrl;
+
+    @Ignore
     @SerializedName("overview")
     private String mOverview;
+
+    @Ignore
     @SerializedName("popularity")
     private Double mRating;
+
+    @Ignore
     @SerializedName("release_date")
     private String mReleaseDate;
 
+    @Ignore
     public Movie(int mMovieID, String mTitle, String mPosterUrl,String mOverview, Double mRating,String mReleaseDate ){
         this.mMovieID = mMovieID;
         this.mTitle = mTitle;
@@ -27,6 +45,13 @@ public class Movie implements Parcelable{
         this.mOverview = mOverview;
         this.mRating = mRating;
         this.mReleaseDate = mReleaseDate;
+    }
+    /**
+     * Constructor used by Room to save and retrieve favourite movies
+    */
+    public Movie(int mMovieID, String mTitle){
+        this.mMovieID = mMovieID;
+        this.mTitle = mTitle;
     }
 
     public int getMovieID() {
@@ -77,7 +102,6 @@ public class Movie implements Parcelable{
         this.mReleaseDate = mReleaseDate;
     }
 
-
     @Override
     public int describeContents() {
         return 0;
@@ -95,7 +119,7 @@ public class Movie implements Parcelable{
 
     private Movie(Parcel in) {
         if (in.readByte() == 0) {
-            mMovieID = null;
+            mMovieID = 0;
         } else {
             mMovieID = in.readInt();
         }
