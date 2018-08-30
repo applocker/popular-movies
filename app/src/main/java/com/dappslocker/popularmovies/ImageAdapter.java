@@ -20,7 +20,6 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapterViewHol
 
     private final static  String TAG = ImageAdapter.class.getSimpleName();
     private final Context mContext;
-
     private static List<Movie> movieList;
     private final ImageAdapterOnClickHandler mClickHandler;
 
@@ -53,7 +52,8 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapterViewHol
     public int getItemCount() {
         if (movieList == null)
             return 0;
-        return movieList.size();    }
+        return movieList.size();
+    }
 
     public void setMovieList(List<Movie> listOfMovies) {
         ImageAdapter.movieList = null;

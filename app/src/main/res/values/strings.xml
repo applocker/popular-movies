@@ -21,4 +21,16 @@
     <string name="movie_rating">Rating: </string>
     <string name="movie_release_date">Release date: </string>
     <string name="toggle_favourite">MARK AS FAVOURITE</string>
+    <string name="trailer_label">Trailers:</string>
+    <string name="image_play_trailer">Play video</string>
+    <string name="user_review_label">User reviews:</string>
+    <string name="test_user_review">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Donec facilisis maximus dui, eget scelerisque turpis. Proin placerat mattis nisi,
+        condimentum euismod nibh porta in. Donec gravida felis sed lectus tempor ultrices.
+        Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+        Aliquam risus odio, vestibulum at placerat a, suscipit sagittis leo.
+        Vivamus id ipsum eu neque tristique scelerisque. Fusce quis luctus leo.
+        Integer aliquet, risus ullamcorper lacinia viverra, lorem ipsum ultrices elit,
+        facilisis maximus odio risus nec nisi.
+    </string>
 </resources>
