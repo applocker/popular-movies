@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 package com.dappslocker.popularmovies.utilities;
-import android.util.Log;
+
+import android.net.Uri;
 
 /**
  * These utilities will be used to communicate with the movies servers.
@@ -27,6 +28,10 @@ public final class NetworkUtils {
     private static final String TOP_RATED_ENDPOINT = "top_rated";
     private static final String POPULAR_MOVIES_IMAGES_URL_BASE ="http://image.tmdb.org/t/p/w185/";
     private static final String POPULAR_MOVIES_IMAGES_URL_BASE_DETAIL ="http://image.tmdb.org/t/p/w342/";
+    private static final String POUPLAR_MOVIES_YOUTUBE_SCHEME= "https";
+    private static final String POUPLAR_MOVIES_YOUTUBE_AUTHORITY = "www.youtube.com";
+    private static final String POUPLAR_MOVIES_YOUTUBE_PATH = "watch";
+    private static final String POUPLAR_MOVIES_YOUTUBE_WATCH_VIDEO_QUERY_KEY = "v";
 
     public static String getPopularMoviesImagesUrlBase() {
         return POPULAR_MOVIES_IMAGES_URL_BASE;
@@ -53,6 +58,18 @@ public final class NetworkUtils {
                 endPoint = POPULAR_ENDPOINT;
         }
         return  endPoint;
+    }
+    /**
+     * Methods returns the Uri to pass to the intent to launch you tube
+    */
+    public static  Uri getYouTubeVideoURI(String videoKey){
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme(POUPLAR_MOVIES_YOUTUBE_SCHEME)
+                .authority(POUPLAR_MOVIES_YOUTUBE_AUTHORITY)
+                .appendPath(POUPLAR_MOVIES_YOUTUBE_PATH)
+                .appendQueryParameter(POUPLAR_MOVIES_YOUTUBE_WATCH_VIDEO_QUERY_KEY, videoKey);
+        String youTubeurl = builder.build().toString();
+        return Uri.parse(youTubeurl);
     }
 
 }

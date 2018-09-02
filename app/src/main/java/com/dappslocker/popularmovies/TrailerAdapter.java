@@ -1,6 +1,5 @@
 package com.dappslocker.popularmovies;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,7 +27,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     }
 
     public interface TrailerAdapterOnClickHandler {
-        void onClick(int position);
+        void onClickTrailer(int position);
     }
 
     public TrailerAdapter(List<Trailer> trailers,TrailerAdapterOnClickHandler clickHandler ) {
@@ -56,6 +55,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         return trailers.size();
     }
 
+    public static Trailer getTrailerAtPosition(int position) {
+        if (trailers == null){
+            return null;
+        }
+        else
+            return trailers.get(position);
+    }
+
     public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView textViewMovieTitle;
         public final ImageView imageViewPLayMovie;
@@ -69,7 +76,7 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         @Override
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
-            mClickHandler.onClick(adapterPosition);
+            mClickHandler.onClickTrailer(adapterPosition);
         }
     }
 }

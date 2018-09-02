@@ -9,14 +9,20 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.dappslocker.popularmovies.apikey.KeyUtil;
 import com.dappslocker.popularmovies.database.FavouriteMoviesDao;
 import com.dappslocker.popularmovies.database.MoviesDatabase;
 import com.dappslocker.popularmovies.model.Movie;
 import com.dappslocker.popularmovies.model.Trailer;
+import com.dappslocker.popularmovies.model.TrailerList;
 import com.dappslocker.popularmovies.model.UserReview;
+import com.dappslocker.popularmovies.model.UserReviewList;
+import com.dappslocker.popularmovies.utilities.GetMovieDataService;
 import com.dappslocker.popularmovies.utilities.NetworkUtils;
+import com.dappslocker.popularmovies.utilities.RetrofitClient;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,12 +30,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler {
 
     private static final String POSITION_CLICKED = "position_clicked";
-    //@SuppressWarnings("WeakerAccess")
-    //@BindView(R.id.textView_movie_id)  TextView mTextViewMovieId;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_title)  TextView mTextViewTitle;
     @SuppressWarnings("WeakerAccess")
@@ -77,8 +84,81 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         mRecylerViewUserReview.setLayoutManager(layoutManagerUserReview);
 
         //load test data
-        loadTestDataTrailers();
-        loadTestDataUserReviews();
+            //loadTestDataTrailers();
+            //loadTestDataUserReviews();
+
+        loadMovieTrailers();
+        loadMovieReviews();
+    }
+
+    private void loadMovieTrailers() {
+        GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
+        Call<TrailerList> call =
+                service.getTrailers(Integer.valueOf(mCurrentSelectedMovie.getMovieID()).toString(),
+                        KeyUtil.getApiKey());
+        call.enqueue(new Callback<TrailerList>() {
+            @Override
+            public void onResponse(Call<TrailerList> call, Response<TrailerList> response) {
+                if(response.isSuccessful()){
+                    displayTrailerListResponseData(response.body());
+                }
+                else{
+                    displayTrailerListResponseData(null);
+                }
+            }
+            @Override
+            public void onFailure(Call<TrailerList> call, Throwable t) {
+                displayTrailerListResponseData(null);
+                Toast.makeText(DetailActivity.this,
+                        "Error loading movies...Please try later!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void loadMovieReviews() {
+        GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
+        Call<UserReviewList> call =
+                service.getReviews(Integer.valueOf(mCurrentSelectedMovie.getMovieID()).toString(),
+                        KeyUtil.getApiKey());
+        call.enqueue(new Callback<UserReviewList>() {
+            @Override
+            public void onResponse(Call<UserReviewList> call, Response<UserReviewList> response) {
+                if(response.isSuccessful()){
+                    displayUserReviewListResponseData(response.body());
+                }
+                else{
+                    displayUserReviewListResponseData(null);
+                }
+            }
+            @Override
+            public void onFailure(Call<UserReviewList> call, Throwable t) {
+                displayUserReviewListResponseData(null);
+                Toast.makeText(DetailActivity.this,
+                        "Error loading movies...Please try later!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void displayTrailerListResponseData(TrailerList trailerList) {
+        if (trailerList != null) {
+            mTrailerAdapter.setTrailers(trailerList.getVideos());
+        } else {
+            Toast.makeText(DetailActivity.this,
+                    "Error loading videos...Please try later!",
+                    Toast.LENGTH_SHORT).show();        }
+    }
+
+    private void displayUserReviewListResponseData(UserReviewList userReviewList) {
+        if (userReviewList != null) {
+            mUserReviewAdapter.setUserReviews(userReviewList.getUserReviews());
+        } else {
+            Toast.makeText(DetailActivity.this,
+                    "Error loading videos...Please try later!",
+                    Toast.LENGTH_SHORT).show();        }
     }
 
     private void loadTestDataTrailers() {
@@ -205,9 +285,15 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     }
 
     @Override
-    public void onClick(int position) {
+    public void onClickTrailer(int position) {
         //position identifies the trailer we want to view
-
+        Trailer trailer = TrailerAdapter.getTrailerAtPosition(position);
+        if(trailer != null){
+            Intent intent = new  Intent(Intent.ACTION_VIEW);
+            intent.setPackage("com.google.android.youtube");
+            intent.setData(NetworkUtils.getYouTubeVideoURI(trailer.getKey()));
+            startActivity(intent);
+        }
     }
 
     public enum DatabaseOperationType {

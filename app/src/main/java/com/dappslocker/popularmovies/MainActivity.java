@@ -1,6 +1,7 @@
 package com.dappslocker.popularmovies;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.preference.PreferenceManager;
@@ -48,8 +49,15 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
         mRecylerGridView.setAdapter(mImageAdapter);
         //set the preference default values
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
-        GridLayoutManager layoutManager
-                = new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false) ;
+        int orientation = this.getResources().getConfiguration().orientation;
+        GridLayoutManager layoutManager;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManager = new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false) ;
+        } else {
+            layoutManager = new GridLayoutManager(this,5,GridLayoutManager.VERTICAL,false) ;
+        }
+
+
         mRecylerGridView.setLayoutManager(layoutManager);
         loadPopularMovies();
     }
