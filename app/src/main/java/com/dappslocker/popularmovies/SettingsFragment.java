@@ -25,12 +25,12 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     @Override
     public void onAttach(Context activity){
         super.onAttach(activity.getApplicationContext());
-        sActivity = (SettingsActivity)activity;//get a reference to the activity that owns this fragment
+        //get a reference to the activity that owns this fragment
+        sActivity = (SettingsActivity)activity;
     }
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        //MoviePreferences pref = new MoviePreferences(sActivity);
         if (key.equals(getString(R.string.popular_movie_choice_list_pref_key))) {
             ListPreference mListPreference = (ListPreference) findPreference(key);
             int selectedIndex;

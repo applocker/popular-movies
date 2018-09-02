@@ -1,45 +1,42 @@
 package com.dappslocker.popularmovies;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.dappslocker.popularmovies.apikey.KeyUtil;
-import com.dappslocker.popularmovies.data.MoviePreferences;
 import com.dappslocker.popularmovies.model.Movie;
-import com.dappslocker.popularmovies.model.MovieList;
-import com.dappslocker.popularmovies.utilities.GetMovieDataService;
-import com.dappslocker.popularmovies.utilities.NetworkUtils;
-import com.dappslocker.popularmovies.utilities.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements ImageAdapter.ImageAdapterOnClickHandler {
-     private  ImageAdapter mImageAdapter;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_gridview) RecyclerView mRecylerGridView;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.pb_loading_indicator)  ProgressBar mLoadingIndicator;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.error_loading_indicator)  LinearLayout mErrorLoadingImages;
+
+    private  ImageAdapter mImageAdapter;
     private static final String POSITION_CLICKED = "position_clicked";
+    private static final String TAG = MainActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,52 +53,33 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
         } else {
             layoutManager = new GridLayoutManager(this,5,GridLayoutManager.VERTICAL,false) ;
         }
-
-
         mRecylerGridView.setLayoutManager(layoutManager);
         loadPopularMovies();
+        setupViewModel();
     }
 
     private void loadPopularMovies() {
         showPopularMovieView();
         mLoadingIndicator.setVisibility(View.VISIBLE);
         mRecylerGridView.setVisibility(View.INVISIBLE);
-        fetchMoviesUsingRetrofit();
     }
 
-    private void fetchMoviesUsingRetrofit() {
-        GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
-        Call<MovieList> call =
-                service.getMovies(NetworkUtils.getEndpoint( MoviePreferences.getPrefChoice(this)), KeyUtil.getApiKey());
-        call.enqueue(new Callback<MovieList>() {
+    private void setupViewModel() {
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
-            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
+            public void onChanged(@Nullable List<Movie> moviesList) {
+                Log.d(TAG, "Updating movie list from LiveData in ViewModel");
                 mLoadingIndicator.setVisibility(View.INVISIBLE);
-                if(response.isSuccessful()){
-                    displayResponseData(response.body());
+                if(moviesList!= null){
+                   showPopularMovieView();
                 }
                 else{
-                    displayResponseData(null);
+                    displayErrorImages();
                 }
-            }
-            @Override
-            public void onFailure(Call<MovieList> call, Throwable t) {
-                mLoadingIndicator.setVisibility(View.INVISIBLE);
-                displayResponseData(null);
-                Toast.makeText(MainActivity.this,
-                        "Error loading movies...Please try later!",
-                        Toast.LENGTH_SHORT).show();
+                mImageAdapter.setMovieList(moviesList);
             }
         });
-    }
-
-    private void displayResponseData(MovieList moviesList) {
-        if (moviesList != null) {
-            showPopularMovieView();
-            mImageAdapter.setMovieList(moviesList.getMovies());
-        } else {
-            displayErrorImages();
-        }
     }
 
     private void loadTestData() {

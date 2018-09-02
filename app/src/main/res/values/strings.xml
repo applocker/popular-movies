@@ -8,6 +8,7 @@
     <string-array name="popular_movie_choice_type_array">
         <item>popular</item>
         <item>top rated</item>
+        <item>favourites</item>
     </string-array>
     <string name="pref_title">Sort by</string>
     <string name="popular_movie_choice_list_pref_key">list_pref_key</string>
