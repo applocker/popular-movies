@@ -8,8 +8,6 @@ import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
-import com.dappslocker.popularmovies.data.MoviePreferences;
-
 
 public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private SettingsActivity sActivity;

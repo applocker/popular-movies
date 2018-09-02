@@ -3,12 +3,11 @@
  *
  */
 
-package com.dappslocker.popularmovies.data;
+package com.dappslocker.popularmovies;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
-
-import com.dappslocker.popularmovies.R;
 
 public class MoviePreferences {
     private static final String PREF_POPULAR = "popular";

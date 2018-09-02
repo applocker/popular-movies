@@ -1,4 +1,4 @@
-package com.dappslocker.popularmovies.database;
+package com.dappslocker.popularmovies.data.source.database;
 
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;

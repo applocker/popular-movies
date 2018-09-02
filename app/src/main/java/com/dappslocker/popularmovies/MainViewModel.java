@@ -8,8 +8,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.dappslocker.popularmovies.apikey.KeyUtil;
-import com.dappslocker.popularmovies.data.MoviePreferences;
-import com.dappslocker.popularmovies.database.MoviesDatabase;
+import com.dappslocker.popularmovies.data.source.database.MoviesDatabase;
 import com.dappslocker.popularmovies.model.Movie;
 import com.dappslocker.popularmovies.model.MovieList;
 import com.dappslocker.popularmovies.utilities.GetMovieDataService;
@@ -73,7 +72,6 @@ class MainViewModel extends AndroidViewModel {
                     Log.d(TAG, "retrieving movie from the Network was not sucessfull");
                 }
             }
-
         });
     }
 

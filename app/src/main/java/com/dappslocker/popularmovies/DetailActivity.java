@@ -14,8 +14,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.dappslocker.popularmovies.apikey.KeyUtil;
-import com.dappslocker.popularmovies.database.FavouriteMoviesDao;
-import com.dappslocker.popularmovies.database.MoviesDatabase;
+import com.dappslocker.popularmovies.data.source.database.FavouriteMoviesDao;
+import com.dappslocker.popularmovies.data.source.database.MoviesDatabase;
 import com.dappslocker.popularmovies.model.Movie;
 import com.dappslocker.popularmovies.model.Trailer;
 import com.dappslocker.popularmovies.model.TrailerList;
