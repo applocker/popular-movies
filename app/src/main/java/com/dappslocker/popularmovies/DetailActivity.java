@@ -2,6 +2,7 @@ package com.dappslocker.popularmovies;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -82,13 +83,12 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         LinearLayoutManager layoutManagerUserReview = new LinearLayoutManager(this);
         mRecylerViewUserReview.setAdapter(mUserReviewAdapter);
         mRecylerViewUserReview.setLayoutManager(layoutManagerUserReview);
-
+        loadMovieTrailers();
+        loadMovieReviews();
         //load test data
             //loadTestDataTrailers();
             //loadTestDataUserReviews();
 
-        loadMovieTrailers();
-        loadMovieReviews();
     }
 
     private void loadMovieTrailers() {
@@ -98,7 +98,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                         KeyUtil.getApiKey());
         call.enqueue(new Callback<TrailerList>() {
             @Override
-            public void onResponse(Call<TrailerList> call, Response<TrailerList> response) {
+            public void onResponse(@NonNull Call<TrailerList> call, @NonNull Response<TrailerList> response) {
                 if(response.isSuccessful()){
                     displayTrailerListResponseData(response.body());
                 }
@@ -107,7 +107,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 }
             }
             @Override
-            public void onFailure(Call<TrailerList> call, Throwable t) {
+            public void onFailure( @NonNull Call<TrailerList> call,@NonNull Throwable t) {
                 displayTrailerListResponseData(null);
                 Toast.makeText(DetailActivity.this,
                         "Error loading movies...Please try later!",
@@ -124,7 +124,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                         KeyUtil.getApiKey());
         call.enqueue(new Callback<UserReviewList>() {
             @Override
-            public void onResponse(Call<UserReviewList> call, Response<UserReviewList> response) {
+            public void onResponse(@NonNull Call<UserReviewList> call, @NonNull Response<UserReviewList> response) {
                 if(response.isSuccessful()){
                     displayUserReviewListResponseData(response.body());
                 }
@@ -133,7 +133,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 }
             }
             @Override
-            public void onFailure(Call<UserReviewList> call, Throwable t) {
+            public void onFailure(@NonNull Call<UserReviewList> call, @NonNull Throwable t) {
                 displayUserReviewListResponseData(null);
                 Toast.makeText(DetailActivity.this,
                         "Error loading movies...Please try later!",
@@ -203,7 +203,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             public void run() {
                 final FavouriteMoviesDao favouriteMoviesDao = mMoviesDatabase.favouriteMoviesDao();
                 if (dbOperation == DatabaseOperationType.INSERT && movie!= null) {
-                    final Movie sMovie = favouriteMoviesDao.loadTaskById(movie.getMovieID());
+                    final Movie sMovie = favouriteMoviesDao.loadMovieId(movie.getMovieID());
                     if(sMovie == null){
                         favouriteMoviesDao.insertMovie(movie);
                         Log.i(TAG," executeDbOps: insert movie to the database");
@@ -214,7 +214,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                     Log.i(TAG," executeDbOps: deleted movie-> " + movie.getTitle());
                     showAllFavouriteMovies(favouriteMoviesDao);
                 }else if ( dbOperation == DatabaseOperationType.QUERY_SINGLE && movie!= null){
-                    final Movie sMovie = favouriteMoviesDao.loadTaskById(movie.getMovieID());
+                    final Movie sMovie = favouriteMoviesDao.loadMovieId(movie.getMovieID());
                     if(sMovie != null){
                         runOnUiThread(new Runnable() {
                             @Override
@@ -292,7 +292,13 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             Intent intent = new  Intent(Intent.ACTION_VIEW);
             intent.setPackage("com.google.android.youtube");
             intent.setData(NetworkUtils.getYouTubeVideoURI(trailer.getKey()));
-            startActivity(intent);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                // No Activity found that can handle this intent.
+                startActivity(intent);
+            }else{
+                Toast.makeText(DetailActivity.this,"You need to have Youtube app to view this trailer",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
