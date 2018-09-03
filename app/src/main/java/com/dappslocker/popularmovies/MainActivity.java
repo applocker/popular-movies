@@ -3,6 +3,7 @@ package com.dappslocker.popularmovies;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -26,7 +27,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements ImageAdapter.ImageAdapterOnClickHandler {
+public class MainActivity extends AppCompatActivity implements ImageAdapter.ImageAdapterOnClickHandler,
+        SharedPreferences.OnSharedPreferenceChangeListener {
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recycler_gridview) RecyclerView mRecylerGridView;
     @SuppressWarnings("WeakerAccess")
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
     private  ImageAdapter mImageAdapter;
     private static final String POSITION_CLICKED = "position_clicked";
     private static final String TAG = MainActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
         mRecylerGridView.setAdapter(mImageAdapter);
         //set the preference default values
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
         int orientation = this.getResources().getConfiguration().orientation;
         GridLayoutManager layoutManager;
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -54,17 +59,17 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
             layoutManager = new GridLayoutManager(this,5,GridLayoutManager.VERTICAL,false) ;
         }
         mRecylerGridView.setLayoutManager(layoutManager);
-        loadPopularMovies();
         setupViewModel();
     }
 
-    private void loadPopularMovies() {
+    private void startMoviesLoadingIndicator() {
         showPopularMovieView();
         mLoadingIndicator.setVisibility(View.VISIBLE);
         mRecylerGridView.setVisibility(View.INVISIBLE);
     }
 
     private void setupViewModel() {
+        startMoviesLoadingIndicator();
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
             @Override
@@ -95,10 +100,12 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
         mRecylerGridView.setVisibility(View.INVISIBLE);
         mErrorLoadingImages.setVisibility(View.VISIBLE);
     }
+
     private void showPopularMovieView() {
         mErrorLoadingImages.setVisibility(View.INVISIBLE);
         mRecylerGridView.setVisibility(View.VISIBLE);
     }
+
     @Override
     public  boolean onCreateOptionsMenu(Menu menu){
         MenuInflater menuInflater = getMenuInflater();
@@ -113,7 +120,9 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
                 //reset the adapter data
                 mImageAdapter.setMovieList(null);
                 //reload data
-                loadPopularMovies();
+                startMoviesLoadingIndicator();
+                MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+                viewModel.refreshData();
                 return true;
             case R.id.action_settings :
                 startSettingsActivity();
@@ -133,5 +142,17 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
         Intent movieDetailIntent = new Intent(getApplicationContext(), DetailActivity.class);
         movieDetailIntent.putExtra(POSITION_CLICKED,position);
         startActivity(movieDetailIntent);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        MainViewModel.setPrefChanged(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
+        viewModel.refreshDataIfPrefChanged();
     }
 }

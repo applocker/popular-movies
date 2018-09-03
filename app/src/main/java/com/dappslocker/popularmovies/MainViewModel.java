@@ -3,22 +3,13 @@ package com.dappslocker.popularmovies;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.dappslocker.popularmovies.apikey.KeyUtil;
-import com.dappslocker.popularmovies.data.source.database.MoviesDatabase;
+import com.dappslocker.popularmovies.data.source.MoviesRepository;
 import com.dappslocker.popularmovies.model.Movie;
-import com.dappslocker.popularmovies.model.MovieList;
-import com.dappslocker.popularmovies.utilities.GetMovieDataService;
-import com.dappslocker.popularmovies.utilities.RetrofitClient;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Tiwuya on 02,September,2018
@@ -29,61 +20,38 @@ import retrofit2.Response;
 class MainViewModel extends AndroidViewModel {
 
     private static final String TAG = MainViewModel.class.getSimpleName();
-    private static final String USER_PREF_FAVOURITE = "favourite";
-    private static MutableLiveData<List<Movie>> movies;
+    private MoviesRepository moviesRepository;
+
+    private static boolean prefChanged = false;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        movies = new MutableLiveData<>();
-        String userPref = MoviePreferences.getPrefChoice(getApplication());
-        if(userPref.equals(USER_PREF_FAVOURITE)) {
-            loadFromDatabase();
-        }else {
-            loadFromNetwork(userPref);
-        }
-    }
-
-    private void loadFromNetwork(String userPref) {
-        GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
-        Call<MovieList> call =
-                service.getMovies(userPref, KeyUtil.getApiKey());
-        call.enqueue(new Callback<MovieList>() {
-            @Override
-            public void onResponse(@NonNull Call<MovieList> call,@NonNull Response<MovieList> response) {
-                if(response.isSuccessful()){
-                    displayResponseData(response.body());
-                }
-                else {
-                    displayResponseData(null);
-                }
-            }
-            @Override
-            public void onFailure(@NonNull Call<MovieList> call, @NonNull Throwable t) {
-                Log.d(TAG, "Error retrieving movies from the Network");
-                displayResponseData(null);
-
-            }
-            private void displayResponseData(MovieList moviesList) {
-                if (moviesList != null) {
-                   movies.postValue(moviesList.getMovies());
-                    Log.d(TAG, "retrieving movie from the Network was sucessfull");
-                } else {
-                    movies.postValue(null);
-                    Log.d(TAG, "retrieving movie from the Network was not sucessfull");
-                }
-            }
-        });
-    }
-
-
-    private void loadFromDatabase() {
-        MoviesDatabase database = MoviesDatabase.getInstance(this.getApplication());
-        Log.d(TAG, "retrieving movie from the DataBase");
-        movies = (MutableLiveData<List<Movie>>) database.favouriteMoviesDao().loadAllFavouriteMovies();
+        moviesRepository = MoviesRepository.getInstance(application,MoviePreferences.getPrefChoice(getApplication()));
     }
 
     public LiveData<List<Movie>> getMovies() {
-        return movies;
+        return moviesRepository.getMovieLiveData();
     }
+
+    public void refreshData() {
+        moviesRepository.refreshData(MoviePreferences.getPrefChoice(getApplication()));
+        Log.d(TAG, "refreshData: refreshing data");
+    }
+
+    public static void setPrefChanged(boolean prefChanged) {
+        MainViewModel.prefChanged = prefChanged;
+        Log.d(TAG, "setPrefChanged: user preference changed");
+    }
+    /**
+     * Method refreshes the UI only when the user changes preference
+    */
+    public void refreshDataIfPrefChanged() {
+        if( MainViewModel.prefChanged){
+            Log.d(TAG, "refreshDataIfPrefChanged: refreshing data");
+            moviesRepository.refreshData(MoviePreferences.getPrefChoice(getApplication()));
+            MainViewModel.prefChanged = false;
+        }
+    }
+
 }
 
