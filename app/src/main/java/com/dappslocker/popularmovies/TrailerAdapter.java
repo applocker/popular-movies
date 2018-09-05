@@ -30,9 +30,8 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
         void onClickTrailer(int position);
     }
 
-    public TrailerAdapter(List<Trailer> trailers,TrailerAdapterOnClickHandler clickHandler ) {
-        //mContext = c;
-        this.trailers = trailers;
+    TrailerAdapter(List<Trailer> trailers,TrailerAdapterOnClickHandler clickHandler ) {
+        TrailerAdapter.trailers = trailers;
         mClickHandler = clickHandler;
     }
     @NonNull
@@ -64,13 +63,13 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerA
     }
 
     public class TrailerAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final TextView textViewMovieTitle;
-        public final ImageView imageViewPLayMovie;
+        final TextView textViewMovieTitle;
+        final ImageView imageViewPLayMovie;
 
-        public TrailerAdapterViewHolder(View itemView) {
+        TrailerAdapterViewHolder(View itemView) {
             super(itemView);
-            textViewMovieTitle = (TextView)itemView.findViewById(R.id.textView_trailer_movie_name);
-            imageViewPLayMovie = (ImageView)itemView.findViewById(R.id.imageView_play_trailer);
+            textViewMovieTitle = itemView.findViewById(R.id.textView_trailer_movie_name);
+            imageViewPLayMovie = itemView.findViewById(R.id.imageView_play_trailer);
             itemView.setOnClickListener(this);
         }
         @Override
