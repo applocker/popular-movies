@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
     private void loadTestData() {
         ArrayList<Movie> listOfMovies = new ArrayList<>();
         for(int i = 0 ;i<100; i++){
-            Movie  movie = new Movie(1,"Interstellar","","",1.0,"");
+            Movie  movie = new Movie(1,"Interstellar","","",1.0f,"");
             listOfMovies.add(movie);
         }
         mImageAdapter.setMovieList(listOfMovies);
@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
                 //reset the adapter data
                 mImageAdapter.setMovieList(null);
                 //reload data
-                startMoviesLoadingIndicator();
                 MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
                 viewModel.refreshData();
                 return true;
@@ -147,12 +146,8 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         MainViewModel.setPrefChanged(true);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         viewModel.refreshDataIfPrefChanged();
     }
+
 }

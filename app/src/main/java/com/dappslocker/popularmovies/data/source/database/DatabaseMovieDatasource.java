@@ -18,12 +18,11 @@ import java.util.List;
 public class DatabaseMovieDatasource implements MoviesDataSource {
 
     private static volatile DatabaseMovieDatasource databaseMovieDatasource;
-    private FavouriteMoviesDao favouriteMoviesDao;
-    private AppExecutors mAppExecutors;
+    private static FavouriteMoviesDao favouriteMoviesDao;
+    private static AppExecutors mAppExecutors;
     private static MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
 
     private DatabaseMovieDatasource(Application application) {
-        //movies = new MutableLiveData<>();
         mAppExecutors = AppExecutors.getInstance();
         favouriteMoviesDao = MoviesDatabase.getInstance(application).favouriteMoviesDao();
     }
@@ -44,7 +43,12 @@ public class DatabaseMovieDatasource implements MoviesDataSource {
         mAppExecutors.diskIO().execute(new Runnable() {
             @Override
             public void run() {
-                movies.postValue(favouriteMoviesDao.loadAllFavouriteMovies().getValue());
+           List<Movie> favMovies = favouriteMoviesDao.loadAllMovies();
+                if( favMovies != null &&  favMovies.size()> 0){
+                    movies.postValue(favMovies);
+                }else{
+                    movies.postValue(null);
+                }
             }
         });
         return movies;
@@ -56,6 +60,7 @@ public class DatabaseMovieDatasource implements MoviesDataSource {
             getMovies();
         }
     }
+
 
 
 }

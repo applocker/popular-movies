@@ -2,7 +2,6 @@ package com.dappslocker.popularmovies.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -21,37 +20,29 @@ public class Movie implements Parcelable{
     @SerializedName("title")
     private String mTitle;
 
-    @Ignore
     @SerializedName("poster_path")
     private String mPosterUrl;
 
-    @Ignore
+
     @SerializedName("overview")
     private String mOverview;
 
-    @Ignore
-    @SerializedName("popularity")
-    private Double mRating;
 
-    @Ignore
+    @SerializedName("popularity")
+    private float mRating;
+
+
     @SerializedName("release_date")
     private String mReleaseDate;
 
-    @Ignore
-    public Movie(int mMovieID, String mTitle, String mPosterUrl,String mOverview, Double mRating,String mReleaseDate ){
+
+    public Movie(int mMovieID, String mTitle, String mPosterUrl,String mOverview, Float mRating,String mReleaseDate ){
         this.mMovieID = mMovieID;
         this.mTitle = mTitle;
         this.mPosterUrl = mPosterUrl;
         this.mOverview = mOverview;
         this.mRating = mRating;
         this.mReleaseDate = mReleaseDate;
-    }
-    /**
-     * Constructor used by Room to save and retrieve favourite movies
-    */
-    public Movie(int mMovieID, String mTitle){
-        this.mMovieID = mMovieID;
-        this.mTitle = mTitle;
     }
 
     public int getMovieID() {
@@ -86,11 +77,11 @@ public class Movie implements Parcelable{
         this.mOverview = mOverview;
     }
 
-    public double getRating() {
+    public float getRating() {
         return mRating;
     }
 
-    public void setRating(Double mRating) {
+    public void setRating(Float mRating) {
         this.mRating = mRating;
     }
 
@@ -127,9 +118,9 @@ public class Movie implements Parcelable{
         mPosterUrl = in.readString();
         mOverview = in.readString();
         if (in.readByte() == 0) {
-            mRating = null;
+            mRating = 0;
         } else {
-            mRating = in.readDouble();
+            mRating = in.readFloat();
         }
         mReleaseDate = in.readString();
     }

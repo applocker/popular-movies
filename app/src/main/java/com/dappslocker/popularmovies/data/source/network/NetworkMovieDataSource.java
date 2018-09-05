@@ -59,9 +59,10 @@ public class NetworkMovieDataSource implements MoviesDataSource {
 
     @Override
     public void refreshData(@NonNull String userPref) {
-        if(!userPref.equals(MoviesRepository.USER_PREF_FAVOURITE))
-        NetworkMovieDataSource.userPref = userPref;
-        loadFromNetwork();
+        if(!userPref.equals(MoviesRepository.USER_PREF_FAVOURITE)){
+            NetworkMovieDataSource.userPref = userPref;
+            loadFromNetwork();
+        }
     }
 
     private void loadFromNetwork() {

@@ -20,38 +20,41 @@ import java.util.List;
 class MainViewModel extends AndroidViewModel {
 
     private static final String TAG = MainViewModel.class.getSimpleName();
-    private MoviesRepository moviesRepository;
-
+    private static MoviesRepository moviesRepository;
     private static boolean prefChanged = false;
+    private LiveData<List<Movie>> movies;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        moviesRepository = MoviesRepository.getInstance(application,MoviePreferences.getPrefChoice(getApplication()));
+        moviesRepository = MoviesRepository.getInstance(getApplication(),MoviePreferences.getPrefChoice(getApplication()));
+        movies = moviesRepository.getMovieLiveData();
     }
 
     public LiveData<List<Movie>> getMovies() {
-        return moviesRepository.getMovieLiveData();
+        return movies;
     }
 
     public void refreshData() {
         moviesRepository.refreshData(MoviePreferences.getPrefChoice(getApplication()));
         Log.d(TAG, "refreshData: refreshing data");
     }
-
     public static void setPrefChanged(boolean prefChanged) {
         MainViewModel.prefChanged = prefChanged;
         Log.d(TAG, "setPrefChanged: user preference changed");
     }
+
     /**
      * Method refreshes the UI only when the user changes preference
     */
-    public void refreshDataIfPrefChanged() {
+    public  void refreshDataIfPrefChanged() {
         if( MainViewModel.prefChanged){
             Log.d(TAG, "refreshDataIfPrefChanged: refreshing data");
             moviesRepository.refreshData(MoviePreferences.getPrefChoice(getApplication()));
             MainViewModel.prefChanged = false;
         }
+
     }
+
 
 }
 

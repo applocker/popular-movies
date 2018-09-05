@@ -1,8 +1,3 @@
-/*
- * Copyright (C) 2018 T H Faaya ANdroid Nano Degree Program
- *
- */
-
 package com.dappslocker.popularmovies;
 
 import android.content.Context;
@@ -12,7 +7,7 @@ import android.support.v7.preference.PreferenceManager;
 public class MoviePreferences {
     private static final String PREF_POPULAR = "popular";
     private static final String PREF_TOP_RATED = "top rated";
-    private static final String PREF_FAVOURITE = "favourite";
+    private static final String PREF_FAVOURITE = "favourites";
     private static final String DEFAULT_PREF_CHOICE = PREF_POPULAR;
     private static  String PrefChoice = "";
 
@@ -39,6 +34,7 @@ public class MoviePreferences {
     }
 
     public  static String getPrefChoice(Context context) {
+        PrefChoice = getDefaultPrefChoice(context);
         if(!PrefChoice.equals("")){
             return PrefChoice;
         }
