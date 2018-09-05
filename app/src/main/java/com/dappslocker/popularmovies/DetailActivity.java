@@ -42,17 +42,17 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_rating)  TextView mTextViewRating;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.textView_release_date)  TextView mTextViewReleaseDate;
+    @BindView(R.id.textView_release_date) TextView mTextViewReleaseDate;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.textView_overview)  TextView mTextViewOverview;
     @SuppressWarnings("WeakerAccess")
-    @BindView(R.id.imageView_movie_poster)   ImageView mImageViewMoviePoster;
-    @BindView(R.id.toggleButton_favourite)
-    private ToggleButton mToggleButtonFavourite;
-    @BindView(R.id.recyclerView_trailer_videos)
-    private RecyclerView mRecylerViewTrailers;
-    @BindView(R.id.recyclerView_user_reviews)
-    private RecyclerView mRecylerViewUserReview;
+    @BindView(R.id.imageView_movie_poster)  ImageView mImageViewMoviePoster;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.toggleButton_favourite) ToggleButton mToggleButtonFavourite;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.recyclerView_trailer_videos) RecyclerView mRecylerViewTrailers;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.recyclerView_user_reviews) RecyclerView mRecylerViewUserReview;
 
     private MoviesDatabase mMoviesDatabase;
     private static final String TAG = DetailActivity.class.getSimpleName();
