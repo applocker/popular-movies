@@ -20,7 +20,7 @@ public class RetrofitClient {
         }
         return retrofit;
     }
-    public static  String getBaseUrl(){
+    private static  String getBaseUrl(){
         return  NetworkUtils.getPopularMoviesBaseUrl();
     }
 }
