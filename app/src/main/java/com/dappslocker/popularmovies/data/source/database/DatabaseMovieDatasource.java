@@ -20,7 +20,7 @@ public class DatabaseMovieDatasource implements MoviesDataSource {
     private static volatile DatabaseMovieDatasource databaseMovieDatasource;
     private static FavouriteMoviesDao favouriteMoviesDao;
     private static AppExecutors mAppExecutors;
-    private static MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
+    private static final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
 
     private DatabaseMovieDatasource(Application application) {
         mAppExecutors = AppExecutors.getInstance();

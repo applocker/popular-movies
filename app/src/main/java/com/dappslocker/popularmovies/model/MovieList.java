@@ -1,16 +1,12 @@
-/**
- * Copyright (C) TH Faaya 2018
- */
-
 package com.dappslocker.popularmovies.model;
-/**
+/*
+ *
  * Created by Tiwuya on 22,August,2018
  */
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This models the object that contains the list of movies

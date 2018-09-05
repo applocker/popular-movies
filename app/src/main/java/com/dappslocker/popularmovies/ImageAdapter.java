@@ -7,8 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+
 import com.dappslocker.popularmovies.model.Movie;
 import com.dappslocker.popularmovies.utilities.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -26,7 +26,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapterViewHol
     public interface ImageAdapterOnClickHandler {
         void onClick(int position);
     }
-    public ImageAdapter(Context c,List<Movie> movieList,ImageAdapterOnClickHandler clickHandler ) {
+    ImageAdapter(Context c,List<Movie> movieList,ImageAdapterOnClickHandler clickHandler ) {
         mContext = c;
         ImageAdapter.movieList = movieList;
         mClickHandler = clickHandler;
@@ -37,8 +37,7 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapterViewHol
         Context context = parent.getContext();
         int layoutIdForListItem = R.layout.grid_view_item;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
-        View view = inflater.inflate(layoutIdForListItem, parent, shouldAttachToParentImmediately);
+        View view = inflater.inflate(layoutIdForListItem, parent, false);
         return new ImageAdapterViewHolder(view);
     }
 
@@ -70,11 +69,11 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapterViewHol
     }
 
     public class ImageAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        public final ImageView imageView;
+        final ImageView imageView;
 
-        public ImageAdapterViewHolder(View view) {
+        ImageAdapterViewHolder(View view) {
             super(view);
-            imageView = (ImageView)view.findViewById(R.id.imageView_grid_item);
+            imageView = view.findViewById(R.id.imageView_grid_item);
             view.setOnClickListener(this);
         }
         private void loadImage(int position) {

@@ -21,7 +21,6 @@ import android.net.Uri;
  * These utilities will be used to communicate with the movies servers.
  */
 public final class NetworkUtils {
-    private static final String TAG = NetworkUtils.class.getSimpleName();
 
     private static final String POPULAR_MOVIES_BASE_URL = "https://api.themoviedb.org/3/movie/";
     private static final String POPULAR_ENDPOINT = "popular";

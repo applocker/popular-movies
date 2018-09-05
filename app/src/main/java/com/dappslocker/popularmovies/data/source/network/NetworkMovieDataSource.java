@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.dappslocker.popularmovies.apikey.KeyUtil;
 import com.dappslocker.popularmovies.data.source.MoviesDataSource;
 import com.dappslocker.popularmovies.data.source.MoviesRepository;
 import com.dappslocker.popularmovies.model.Movie;
@@ -26,7 +25,7 @@ public class NetworkMovieDataSource implements MoviesDataSource {
 
     private static volatile NetworkMovieDataSource networkMovieDataSource;
     private static final String TAG = NetworkMovieDataSource.class.getSimpleName();
-    private static MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
+    private static final MutableLiveData<List<Movie>> movies = new MutableLiveData<>();
     private static String userPref = "";
 
     private NetworkMovieDataSource(String userPref) {
@@ -68,7 +67,7 @@ public class NetworkMovieDataSource implements MoviesDataSource {
     private void loadFromNetwork() {
         GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
         Call<MovieList> call =
-                service.getMovies(userPref, KeyUtil.getApiKey());
+                service.getMovies(userPref, "<<Your api key here>>");
         call.enqueue(new Callback<MovieList>() {
             @Override
             public void onResponse(@NonNull Call<MovieList> call, @NonNull Response<MovieList> response) {

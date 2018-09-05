@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.dappslocker.popularmovies.apikey.KeyUtil;
 import com.dappslocker.popularmovies.data.source.database.FavouriteMoviesDao;
 import com.dappslocker.popularmovies.data.source.database.MoviesDatabase;
 import com.dappslocker.popularmovies.model.Movie;
@@ -48,15 +47,17 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     @BindView(R.id.textView_overview)  TextView mTextViewOverview;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.imageView_movie_poster)   ImageView mImageViewMoviePoster;
-    @BindView(R.id.toggleButton_favourite)   ToggleButton mToggleButtonFavourite;
-    @BindView(R.id.recyclerView_trailer_videos)   RecyclerView mRecylerViewTrailers;
-    @BindView(R.id.recyclerView_user_reviews)   RecyclerView mRecylerViewUserReview;
+    @BindView(R.id.toggleButton_favourite)
+    private ToggleButton mToggleButtonFavourite;
+    @BindView(R.id.recyclerView_trailer_videos)
+    private RecyclerView mRecylerViewTrailers;
+    @BindView(R.id.recyclerView_user_reviews)
+    private RecyclerView mRecylerViewUserReview;
 
     private MoviesDatabase mMoviesDatabase;
     private static final String TAG = DetailActivity.class.getSimpleName();
     private int mSelectedMoviePosition;
     private Movie mCurrentSelectedMovie;
-    private List<Movie> mfavouriteMovies = null;
     private static final int MOVIE_POSITION_FOR_QUERY_OPERATION = -1;
     private TrailerAdapter mTrailerAdapter;
     private UserReviewAdapter mUserReviewAdapter;
@@ -95,7 +96,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
         Call<TrailerList> call =
                 service.getTrailers(Integer.valueOf(mCurrentSelectedMovie.getMovieID()).toString(),
-                        KeyUtil.getApiKey());
+                        "<<Your api key here>>");
         call.enqueue(new Callback<TrailerList>() {
             @Override
             public void onResponse(@NonNull Call<TrailerList> call, @NonNull Response<TrailerList> response) {
@@ -121,7 +122,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
         Call<UserReviewList> call =
                 service.getReviews(Integer.valueOf(mCurrentSelectedMovie.getMovieID()).toString(),
-                        KeyUtil.getApiKey());
+                        "<<Your api key here>>");
         call.enqueue(new Callback<UserReviewList>() {
             @Override
             public void onResponse(@NonNull Call<UserReviewList> call, @NonNull Response<UserReviewList> response) {
@@ -230,7 +231,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mfavouriteMovies = movies;
                             Log.i(TAG," executeDbOps: loaded all movies ");
                         }
                     });

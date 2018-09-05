@@ -15,7 +15,6 @@ import java.util.List;
  * Created by Tiwuya on 30,August,2018
  */
 public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.UserReviewAdapterViewHolder> {
-    private final static  String TAG = TrailerAdapter.class.getSimpleName();
     private static List<UserReview> userReviews;
 
     public  void setUserReviews(List<UserReview> userReviews) {
@@ -24,8 +23,8 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         notifyDataSetChanged();
     }
 
-    public UserReviewAdapter(List<UserReview> userReviews ) {
-        this.userReviews = userReviews;
+    UserReviewAdapter(List<UserReview> userReviews ) {
+        UserReviewAdapter.userReviews = userReviews;
     }
 
     @NonNull
@@ -49,14 +48,14 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         return userReviews.size();
     }
 
-    public class UserReviewAdapterViewHolder extends RecyclerView.ViewHolder{
-        public final TextView textViewAuthor;
-        public final TextView textViewContent;
+    class UserReviewAdapterViewHolder extends RecyclerView.ViewHolder{
+        final TextView textViewAuthor;
+        final TextView textViewContent;
 
-        public UserReviewAdapterViewHolder(View itemView) {
+        UserReviewAdapterViewHolder(View itemView) {
             super(itemView);
-            textViewAuthor = (TextView)itemView.findViewById(R.id.textView_author);
-            textViewContent = (TextView)itemView.findViewById(R.id.textView_content);
+            textViewAuthor = itemView.findViewById(R.id.textView_author);
+            textViewContent = itemView.findViewById(R.id.textView_content);
         }
     }
 }

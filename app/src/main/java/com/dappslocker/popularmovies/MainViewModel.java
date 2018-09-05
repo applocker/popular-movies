@@ -22,7 +22,7 @@ class MainViewModel extends AndroidViewModel {
     private static final String TAG = MainViewModel.class.getSimpleName();
     private static MoviesRepository moviesRepository;
     private static boolean prefChanged = false;
-    private LiveData<List<Movie>> movies;
+    private final LiveData<List<Movie>> movies;
 
     public MainViewModel(@NonNull Application application) {
         super(application);

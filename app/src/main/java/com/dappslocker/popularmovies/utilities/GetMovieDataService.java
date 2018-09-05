@@ -1,4 +1,4 @@
-/**
+/*
  * Created by Tiwuya on 22,August,2018
  */
 /***************************************************************************************
@@ -6,11 +6,8 @@
  ***************************************************************************************/
 package com.dappslocker.popularmovies.utilities;
 
-import android.support.annotation.NonNull;
-
 import com.dappslocker.popularmovies.model.MovieList;
 import com.dappslocker.popularmovies.model.TrailerList;
-import com.dappslocker.popularmovies.model.UserReview;
 import com.dappslocker.popularmovies.model.UserReviewList;
 
 import retrofit2.Call;

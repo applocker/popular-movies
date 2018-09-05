@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.preference.PreferenceManager;
 
-public class MoviePreferences {
+class MoviePreferences {
     private static final String PREF_POPULAR = "popular";
     private static final String PREF_TOP_RATED = "top rated";
 
