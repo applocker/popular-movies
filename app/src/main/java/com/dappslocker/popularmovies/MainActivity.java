@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.dappslocker.popularmovies.model.Movie;
 
@@ -35,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
     @BindView(R.id.pb_loading_indicator)  ProgressBar mLoadingIndicator;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.error_loading_indicator)  LinearLayout mErrorLoadingImages;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.textView_error_loading_message) TextView mErrorLoadingMessage;
 
     private  ImageAdapter mImageAdapter;
     private static final String POSITION_CLICKED = "position_clicked";
@@ -97,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
     }
 
     private void displayErrorImages() {
+        String pref = MoviePreferences.getPrefChoice(this);
+        if(pref.equals(MoviePreferences.getPrefFavourite())){
+            mErrorLoadingMessage.setText(getResources().getString(R.string.error_message_no_favourite));
+        }
+        else{
+            mErrorLoadingMessage.setText(getResources().getString(R.string.error_message));
+        }
         mRecylerGridView.setVisibility(View.INVISIBLE);
         mErrorLoadingImages.setVisibility(View.VISIBLE);
     }
@@ -120,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements ImageAdapter.Imag
                 //reset the adapter data
                 mImageAdapter.setMovieList(null);
                 //reload data
+                startMoviesLoadingIndicator();
                 MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
                 viewModel.refreshData();
                 return true;

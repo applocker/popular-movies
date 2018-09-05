@@ -2,6 +2,7 @@
     <string name="app_name">Popular Movies</string>
     <string name="image_content_description">Image loading error</string>
     <string name="error_message">There was an error while loading the images please click refresh to try again</string>
+    <string name="error_message_no_favourite">You do not have any favourite movies yet</string>
     <string name="menu_refresh">Refresh movies</string>
 
     <!-- Preferences resource values  -->
