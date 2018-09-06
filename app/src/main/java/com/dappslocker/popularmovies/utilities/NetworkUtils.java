@@ -36,6 +36,8 @@ public final class NetworkUtils {
         return POPULAR_MOVIES_IMAGES_URL_BASE;
     }
 
+    private NetworkUtils() { }
+
     public static String getPopularMoviesImagesUrlBaseDetail() {
         return POPULAR_MOVIES_IMAGES_URL_BASE_DETAIL;
     }

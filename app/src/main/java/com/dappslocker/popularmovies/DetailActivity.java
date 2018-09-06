@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.dappslocker.popularmovies.apikey.KeyUtil;
 import com.dappslocker.popularmovies.data.source.database.FavouriteMoviesDao;
 import com.dappslocker.popularmovies.data.source.database.MoviesDatabase;
 import com.dappslocker.popularmovies.model.Movie;
@@ -96,7 +97,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
         Call<TrailerList> call =
                 service.getTrailers(Integer.valueOf(mCurrentSelectedMovie.getMovieID()).toString(),
-                        "<<Your api key here>>");
+                        KeyUtil.getApiKey());
         call.enqueue(new Callback<TrailerList>() {
             @Override
             public void onResponse(@NonNull Call<TrailerList> call, @NonNull Response<TrailerList> response) {
@@ -122,7 +123,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
         Call<UserReviewList> call =
                 service.getReviews(Integer.valueOf(mCurrentSelectedMovie.getMovieID()).toString(),
-                        "<<Your api key here>>");
+                        KeyUtil.getApiKey());
         call.enqueue(new Callback<UserReviewList>() {
             @Override
             public void onResponse(@NonNull Call<UserReviewList> call, @NonNull Response<UserReviewList> response) {
