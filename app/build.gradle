@@ -27,6 +27,7 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation  "com.android.support:preference-v14:${rootProject.ext.supportLibVersion}"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation "com.android.support:design:${rootProject.ext.supportLibVersion}"
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.5.2'
     testImplementation 'junit:junit:4.12'

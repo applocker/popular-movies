@@ -3,6 +3,8 @@ package com.dappslocker.popularmovies;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.dappslocker.popularmovies.apikey.KeyUtil;
@@ -35,6 +36,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/*
+* Referenced  https://www.androidhive.info/2015/09/android-material-design-snackbar-example/
+*/
 public class DetailActivity extends AppCompatActivity implements TrailerAdapter.TrailerAdapterOnClickHandler {
 
     private static final String POSITION_CLICKED = "position_clicked";
@@ -54,6 +58,8 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     @BindView(R.id.recyclerView_trailer_videos) RecyclerView mRecylerViewTrailers;
     @SuppressWarnings("WeakerAccess")
     @BindView(R.id.recyclerView_user_reviews) RecyclerView mRecylerViewUserReview;
+    @SuppressWarnings("WeakerAccess")
+    @BindView(R.id.constraintLayout) ConstraintLayout mConstraintLayout;
 
     private MoviesDatabase mMoviesDatabase;
     private static final String TAG = DetailActivity.class.getSimpleName();
@@ -62,6 +68,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
     private static final int MOVIE_POSITION_FOR_QUERY_OPERATION = -1;
     private TrailerAdapter mTrailerAdapter;
     private UserReviewAdapter mUserReviewAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +100,12 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
 
     }
 
+    private void showMessage(String errorMessage) {
+        Snackbar snackbar = Snackbar
+                .make(mConstraintLayout, errorMessage, Snackbar.LENGTH_LONG);
+        snackbar.show();
+    }
+
     private void loadMovieTrailers() {
         GetMovieDataService service = RetrofitClient.getRetrofitInstance().create(GetMovieDataService.class);
         Call<TrailerList> call =
@@ -111,9 +124,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             @Override
             public void onFailure( @NonNull Call<TrailerList> call,@NonNull Throwable t) {
                 displayTrailerListResponseData(null);
-                Toast.makeText(DetailActivity.this,
-                        "Error loading movies...Please try later!",
-                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -137,9 +147,6 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
             @Override
             public void onFailure(@NonNull Call<UserReviewList> call, @NonNull Throwable t) {
                 displayUserReviewListResponseData(null);
-                Toast.makeText(DetailActivity.this,
-                        "Error loading movies...Please try later!",
-                        Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -149,18 +156,16 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         if (trailerList != null) {
             mTrailerAdapter.setTrailers(trailerList.getVideos());
         } else {
-            Toast.makeText(DetailActivity.this,
-                    "Error loading videos...Please try later!",
-                    Toast.LENGTH_SHORT).show();        }
+            showMessage("There are no trailers for this movie");
+        }
     }
 
     private void displayUserReviewListResponseData(UserReviewList userReviewList) {
         if (userReviewList != null) {
             mUserReviewAdapter.setUserReviews(userReviewList.getUserReviews());
         } else {
-            Toast.makeText(DetailActivity.this,
-                    "Error loading videos...Please try later!",
-                    Toast.LENGTH_SHORT).show();        }
+            showMessage("There are no user reviews yet");
+        }
     }
 
     private void loadTestDataTrailers() {
@@ -270,7 +275,8 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         //re-load the image with picasso here using the poster url the images should now be cached in memory
         String imgUrl = NetworkUtils.getPopularMoviesImagesUrlBase() + movie.getPosterUrl();
         Picasso.with(getApplicationContext()).load(imgUrl)
-                .placeholder(R.drawable.ic_image_black_48dp)
+                .placeholder(R.drawable.ic_hourglass_empty_white_48dp)
+                .error(R.drawable.ic_image_black_48dp)
                 .into(mImageViewMoviePoster);
     }
 
@@ -297,8 +303,7 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
                 // No Activity found that can handle this intent.
                 startActivity(intent);
             }else{
-                Toast.makeText(DetailActivity.this,"You need to have Youtube app to view this trailer",
-                        Toast.LENGTH_SHORT).show();
+                showMessage("You need to have Youtube app to view this trailer");
             }
         }
     }
