@@ -81,7 +81,8 @@ class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageAdapterViewHol
             //load the image with picasso here using the poster url
             String imgUrl = NetworkUtils.getPopularMoviesImagesUrlBase() + movieList.get(position).getPosterUrl();
             Picasso.with(mContext).load(imgUrl)
-                    .placeholder(R.drawable.ic_image_black_48dp)
+                    .placeholder(R.drawable.ic_hourglass_empty_white_48dp)
+                    .error(R.drawable.ic_image_black_48dp)
                     .into(imageView);
             Log.i(TAG, ": finish loading image at position " + position);
         }
