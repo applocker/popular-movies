@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -308,11 +309,16 @@ public class DetailActivity extends AppCompatActivity implements TrailerAdapter.
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
     public enum DatabaseOperationType {
         INSERT,
         DELETE,
         QUERY,
         QUERY_SINGLE
     }
-
 }
