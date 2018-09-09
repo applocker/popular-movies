@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginTop="@dimen/vertical_margin_small"
+    android:layout_marginBottom="@dimen/vertical_margin_small"
     style="@style/CardViewStyle">
 
     <LinearLayout
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="3"
-            android:textSize="24sp"
+            android:textSize="@dimen/textSize_large"
             tools:text="The longest day" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="3"
-            android:textSize="14sp"
+            android:textSize="@dimen/textSize_small"
             tools:text="The longest day" />
     </LinearLayout>
 

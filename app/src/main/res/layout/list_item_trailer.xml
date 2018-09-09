@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
+    android:layout_marginTop="@dimen/vertical_margin_small"
+    android:layout_marginBottom="@dimen/vertical_margin_small"
     style="@style/CardViewStyle">
 
     <LinearLayout
@@ -15,10 +15,10 @@
         <ImageView
             android:id="@+id/imageView_play_trailer"
             android:layout_width="0dp"
-            android:layout_height="85dp"
+            android:layout_height="@dimen/imageView_grid_item_heigth"
             android:layout_weight="1"
             android:contentDescription="@string/image_play_trailer"
-            android:padding="16dp"
+            android:padding="@dimen/horizontal_margin_medium"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_play_arrow_black_48dp"
             tools:src="@drawable/ic_play_arrow_black_48dp"/>
@@ -28,11 +28,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="@dimen/horizontal_margin_small"
             android:layout_weight="3"
-            android:textSize="18sp"
+            android:textSize="@dimen/textSize_medium"
             tools:text="The longest day"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="@dimen/horizontal_margin_small" />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

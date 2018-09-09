@@ -12,8 +12,8 @@
 
    <ProgressBar
        android:id="@+id/pb_loading_indicator"
-       android:layout_height="42dp"
-       android:layout_width="42dp"
+       android:layout_height="@dimen/progressBar_heigth"
+       android:layout_width="@dimen/progressBar_width"
        android:layout_gravity="center"
        android:visibility="invisible" />
 
@@ -22,15 +22,16 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_gravity="center"
-       android:padding="8dp"
+       android:padding="@dimen/vertical_margin_small"
        android:visibility="invisible"
        android:orientation="vertical">
       <ImageView
-          android:layout_width="160dp"
-          android:layout_height="160dp"
+          android:id="@+id/imageView_error"
+          android:layout_width="@dimen/imageView_error_width"
+          android:layout_height="@dimen/imageView_error_heigth"
           android:layout_gravity="center"
           android:contentDescription="@string/image_content_description"
-          android:padding="8dp"
+          android:padding="@dimen/vertical_margin_small"
           android:scaleType="centerCrop"
           app:srcCompat="@drawable/ic_image_black_48dp" />
 
@@ -38,9 +39,9 @@
           android:id="@+id/textView_error_loading_message"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:padding="16dp"
+          android:padding="@dimen/vertical_margin_medium"
           android:text="@string/error_message"
-          android:textSize="16sp" />
+          android:textSize="@dimen/textSize_small" />
    </LinearLayout>
 
 </FrameLayout>
